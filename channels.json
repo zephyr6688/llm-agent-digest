@@ -1,0 +1,11 @@
+{
+  "_readme": "渠道启用配置。冷启动四渠道已启用；扩展三步法：pipeline/channels.py 继承 Channel 并注册 → 此处 enabled 加入 → export.py 无需改动。",
+  "enabled": ["wechat", "zhihu", "juejin", "jike"],
+  "roadmap": [
+    "bilibili_column",
+    "wechat_channels",
+    "xiaohongshu",
+    "weibo",
+    "email_digest"
+  ]
+}

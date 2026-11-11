@@ -1,0 +1,27 @@
+{
+  "_readme": "术语表：翻译/改写阶段做一致性约束。keep_english 中的词不强行翻译。",
+  "terms": {
+    "context engineering": "上下文工程",
+    "tool use": "工具调用",
+    "function calling": "函数调用",
+    "agentic": "自主式（语境定夺，可保留 agentic）",
+    "evals": "评测",
+    "scaffolding": "脚手架",
+    "agentic loop": "Agent 循环",
+    "reasoning model": "推理模型",
+    "chain-of-thought": "思维链",
+    "retrieval-augmented generation": "检索增强生成（RAG）",
+    "fine-tuning": "微调",
+    "RLHF": "基于人类反馈的强化学习",
+    "guardrails": "护栏",
+    "observability": "可观测性",
+    "tracing": "链路追踪",
+    "Model Context Protocol": "模型上下文协议（MCP）",
+    "multi-agent system": "多智能体系统",
+    "context window": "上下文窗口",
+    "token budget": "token 预算",
+    "hit rate": "命中率",
+    "agent harness": "Agent 执行框架"
+  },
+  "keep_english": ["Agent", "token", "RAG", "MCP", "LLM", "prompt", "A2A"]
+}

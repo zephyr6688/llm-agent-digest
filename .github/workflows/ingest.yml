@@ -1,0 +1,39 @@
+name: ingest
+
+on:
+  schedule:
+    - cron: "0 * * * *" # 每小时整点（UTC）
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch feeds (P0+P1 + Hacker News)
+        run: python3 pipeline/fetch.py --prio P0,P1 --hn
+
+      - name: Score (LLM if key set, else heuristic)
+        run: python3 pipeline/score.py
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_API_BASE: ${{ vars.LLM_API_BASE || 'https://api.deepseek.com/v1' }}
+          LLM_MODEL: ${{ vars.LLM_MODEL || 'deepseek-chat' }}
+
+      - name: Refresh inbox
+        run: python3 pipeline/report.py --inbox
+
+      - name: Commit
+        run: |
+          git config user.name "ingest-bot"
+          git config user.email "ingest-bot@users.noreply.github.com"
+          git add db.sqlite content/inbox.md
+          git diff --cached --quiet || (git commit -m "chore(ingest): update $(date -u +'%F %H:%M') UTC" && git push)

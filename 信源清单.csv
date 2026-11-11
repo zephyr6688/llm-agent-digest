@@ -1,0 +1,43 @@
+类别,名称,地址,价值点,优先级,授权状态
+个人博客,Simon Willison,https://simonwillison.net/,LLM应用工程第一信源,P0,待联系
+个人博客,Lilian Weng,https://lilianweng.github.io/,体系化综述长文,P0,待联系
+个人博客,Hamel Husain,https://hamel.dev/,LLM评测(evals)权威,P0,待联系
+个人博客,Chip Huyen,https://huyenchip.com/,系统与生产视角,P0,待联系
+个人博客,Eugene Yan,https://eugeneyan.com/,应用与落地视角,P0,待联系
+个人博客,swyx,https://www.swyx.io/,AI工程师布道者,P0,待联系
+个人博客,Sebastian Raschka,https://magazine.sebastianraschka.com/,模型原理向(Ahead of AI),P0,待联系
+个人博客,Jason Liu,https://jxnl.co/,结构化输出/instructor作者,P0,待联系
+个人博客,Karpathy,https://karpathy.github.io/,教学与工程直觉,P0,待联系
+个人博客,Thorsten Ball,https://thorstenball.com/,AI编程/agent随笔,P1,待联系
+个人博客,Armin Ronacher,https://lucumr.pocoo.org/,资深工程师看AI,P1,待联系
+个人博客,Mitchell Hashimoto,https://mitchellh.com/,Ghostty作者看agent,P1,待联系
+个人博客,Matt Rickard,https://matt-rickard.com/,行业结构分析,P1,待联系
+个人博客,Phil Schmid,https://philschmid.de/,开源模型工程,P1,待联系
+个人博客,Humanloop Blog,https://humanloop.com/blog,Raza的LLM工程观点,P1,待联系
+实验室博客,Anthropic Research,https://www.anthropic.com/research,一手研究,P0,待联系
+实验室博客,Anthropic Engineering,https://www.anthropic.com/engineering,工程实践浓度极高,P0,待联系
+实验室博客,OpenAI Research,https://openai.com/research/,一手研究,P0,待联系
+实验室博客,OpenAI Cookbook,https://cookbook.openai.com/,实操代码金矿,P0,开源可用
+实验室博客,Anthropic Cookbook,https://github.com/anthropics/anthropic-cookbook,实操代码,P0,开源可用
+实验室博客,Google DeepMind Blog,https://deepmind.google/discover/blog,一手研究,P0,待确认
+实验室博客,Google Research Blog,https://research.google/blog/,一手研究,P1,待确认
+实验室博客,Hugging Face Blog,https://huggingface.co/blog,开源生态动态,P0,待确认
+实验室博客,Meta AI Blog,https://ai.meta.com/blog/,一手研究,P1,待确认
+实验室博客,Mistral News,https://mistral.ai/news,欧洲视角,P1,待确认
+实验室博客,Cohere Blog,https://cohere.com/blog,企业RAG视角,P1,待确认
+实验室博客,Qwen Blog,https://qwenlm.github.io/blog/,国产但海外发布,P1,可直接引用
+Newsletter,Latent Space,https://www.latent.space/,工程向访谈+周报,P0,待联系
+Newsletter,Interconnects,https://www.interconnects.ai/,开源与模型经济学,P0,待联系
+Newsletter,Last Week in AI,https://lastweekin.ai/,事件聚合查漏,P1,摘要引用
+Newsletter,The Batch,https://www.deeplearning.ai/the-batch/,入门向聚合,P2,摘要引用
+工程团队博客,Manus Blog,https://manus.im/blog,agent工程复盘浓度高,P0,待联系
+工程团队博客,Vercel AI SDK Blog,https://vercel.com/blog,AI SDK工具链,P1,待联系
+工程团队博客,LangChain Blog,https://blog.langchain.dev/,agent框架动态,P1,注意甄别营销
+工程团队博客,LlamaIndex Blog,https://blog.llamaindex.ai/,RAG框架动态,P2,注意甄别营销
+工程团队博客,Cursor Changelog,https://cursor.com/changelog,AI编程工具动态,P1,可直接引用
+发现层,Hacker News,https://news.ycombinator.com/,每日AI热帖雷达,P0,链接引用
+发现层,arXiv cs.CL,https://arxiv.org/list/cs.CL/recent,论文流(仅追被讨论的),P1,摘要引用
+发现层,arXiv cs.AI,https://arxiv.org/list/cs.AI/recent,论文流,P1,摘要引用
+发现层,GitHub Trending,https://github.com/trending/python,项目雷达,P1,链接引用
+发现层,Reddit r/LocalLLaMA,https://www.reddit.com/r/LocalLLaMA/,社区讨论雷达,P1,链接引用
+发现层,X/Twitter 私有List,https://x.com/,把上述博主+研究员拉List,P0,观点引用需授权

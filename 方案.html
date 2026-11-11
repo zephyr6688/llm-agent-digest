@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>打破信息差：LLM / Agent 方向博客引进与分发全流程落地方案</title>
+<style>
+  :root { --ink:#1c2b3a; --muted:#5b6b7b; --accent:#0f8b8d; --line:#e3e9ef; --bg:#fbfcfd; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 20px 80px;
+    background: var(--bg); color: var(--ink);
+    font-family: 'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;
+    font-size: 16px; line-height: 1.75;
+  }
+  main { max-width: 940px; margin: 0 auto; }
+  h1 { font-size: 1.7em; line-height: 1.35; margin: 2.2em 0 0.4em; }
+  h2 { font-size: 1.32em; margin: 2.4em 0 0.6em; padding-bottom: 0.3em;
+       border-bottom: 2px solid var(--accent); }
+  h3 { font-size: 1.1em; margin: 1.8em 0 0.5em; }
+  p { margin: 0.7em 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  blockquote {
+    margin: 1.2em 0; padding: 0.6em 1.1em; border-left: 4px solid var(--accent);
+    background: #fff; border-radius: 0 8px 8px 0; color: var(--muted);
+  }
+  blockquote p { margin: 0.3em 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1.1em 0; background: #fff;
+          font-size: 0.93em; }
+  th, td { border: 1px solid var(--line); padding: 8px 11px; text-align: left;
+           vertical-align: top; }
+  th { background: #eef6f6; color: #12324d; }
+  tr:nth-child(even) td { background: #f7fafb; }
+  code { font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 0.88em;
+         background: #eef2f5; padding: 2px 5px; border-radius: 4px; }
+  pre { background: #f4f6f8; border: 1px solid var(--line); border-radius: 10px;
+        padding: 14px 16px; overflow-x: auto; line-height: 1.55; }
+  pre code { background: none; padding: 0; font-size: 0.85em; }
+  figure.diagram {
+    margin: 1.6em 0; padding: 10px; background: #fff;
+    border: 1px solid var(--line); border-radius: 12px;
+    overflow-x: auto;
+  }
+  figure.diagram svg { display: block; margin: 0 auto; height: auto; }
+  hr { border: none; border-top: 1px solid var(--line); margin: 2.6em 0; }
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  strong { color: #12324d; }
+  @media print { body { background: #fff; } figure.diagram { break-inside: avoid; } }
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    table { display: block; overflow-x: auto; }
+    figure.diagram svg { min-width: 620px; }
+  }
+</style>
+</head>
+<body>
+<main>
+<h1>打破信息差：LLM / Agent 方向博客引进与分发全流程落地方案</h1>
+<blockquote>
+<p>版本 v1.0 · 2026-11-11
+主题：大语言模型与 Agent 开发方向的海外一手技术内容引进（&quot;博客搬运&quot;）
+目标：建立一套<strong>合规、可持续、可自动化</strong>的信源 → 加工 → 分发全流程管线</p>
+</blockquote>
+<hr>
+<h2>1. 机会分析：信息差到底差在哪</h2>
+<p>国内开发者与海外前沿之间的信息差是<strong>三层叠加</strong>的：</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>表现</th>
+<th>现状</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>语言差</strong></td>
+<td>海外一线工程博客（Anthropic Engineering、Simon Willison、Hamel Husain 等）大部分内容没有中文版</td>
+<td>个人译者零星覆盖，无系统性</td>
+</tr>
+<tr>
+<td><strong>时差</strong></td>
+<td>英文原文发布 → 国内铺开，通常滞后 3~7 天，且多为媒体转述</td>
+<td>转述过程失真严重，工程细节丢失</td>
+</tr>
+<tr>
+<td><strong>视角差</strong></td>
+<td>国内机构媒体（机器之心、量子位、新智元、AI 前线）偏<strong>新闻/论文解读</strong>视角</td>
+<td>缺&quot;动手做 agent 的人&quot;关心的工程实操：评测、上下文工程、工具调用、踩坑</td>
+</tr>
+</tbody></table>
+<p><strong>竞争格局判断</strong>：</p>
+<ul>
+<li>机构媒体：快但浅、新闻导向、追热点模型发布，不追工程方法论；</li>
+<li>个人译者（如长期坚持翻译海外 AI 内容的个人号）：证明&quot;个人 IP + 翻译&quot;路径可行，但选题随缘、不连续、无沉淀；</li>
+<li><strong>空档位</strong>：面向 Agent 开发者的、<strong>系统性 + 持续性 + 可检索</strong>的一手工程情报。这个位置目前没有占满。</li>
+</ul>
+<p><strong>建议定位（一句话）</strong>：</p>
+<blockquote>
+<p>面向&quot;动手做 Agent 的人&quot;的一手工程情报站——做<strong>编译者 + 策展人</strong>，不做新闻搬运工。</p>
+</blockquote>
+<hr>
+<h2>2. 合规红线（决定项目生死，必须先定）</h2>
+<p>&quot;搬运&quot;这个词在版权上是不成立的——<strong>全文照搬即使署名也是侵权</strong>，公众号/知乎会被投诉下架甚至封号。所以方案的第一性设计是：<strong>用合规的内容获取模式换取长期生存</strong>。</p>
+<p>三种模式，按风险从低到高：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>做法</th>
+<th>风险</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>A. 摘要 + 导读 + 原文链接</strong></td>
+<td>200~500 字提炼核心观点，带自己的点评，链接原文</td>
+<td>最低（合理引用范畴）</td>
+<td>周报、日常分发</td>
+</tr>
+<tr>
+<td><strong>B. 深度编译</strong></td>
+<td>基于原文的结构化改写 + 大量自己的解读增量</td>
+<td>中（取决于改写深度与原作许可协议；CC-BY 署名可直接用）</td>
+<td>重磅单篇</td>
+</tr>
+<tr>
+<td><strong>C. 授权全文翻译</strong></td>
+<td>邮件获得作者书面授权后全文翻译，规范署名</td>
+<td>最低（授权在手）</td>
+<td>头部信源的镇店内容</td>
+</tr>
+</tbody></table>
+<p><strong>关键行动项</strong>：</p>
+<ol>
+<li><strong>建立授权台账</strong>（<code>auth_ledger.csv</code>）：对 P0 级信源逐个发授权邮件（模板见附录 A）。很多独立博主对&quot;中文翻译 + 规范署名 + 回链&quot;非常友好，谈判成本远低于想象；</li>
+<li><strong>规范署名格式</strong>：每篇编译/译文头部固定放「作者 / 原文链接 / 授权说明 / 译注说明」四要素；</li>
+<li><strong>&quot;原创&quot;标记纪律</strong>：公众号原创声明只用于自己写作比例足够的内容（导读 + 点评 + 改写为主体时才标）；</li>
+<li><strong>收到投诉 24 小时下架机制</strong>：先下架、再沟通，不硬扛；</li>
+<li><strong>长期护城河</strong>：目标是与 3~5 位头部博主建立稳定授权关系，甚至成为其&quot;官方中文渠道&quot;——这是别人抄不走的。</li>
+</ol>
+<hr>
+<h2>3. 信源体系（核心竞争力所在）</h2>
+<p>信源决定内容上限。按价值分层（完整可执行清单见 <code>信源清单.csv</code>，共 40+ 条）：</p>
+<p><strong>第一梯队：独立技术博客（价值最高——有真实工程判断，非新闻稿）</strong></p>
+<ul>
+<li>Simon Willison（simonwillison.net）——LLM 应用工程第一信源</li>
+<li>Lilian Weng（lilianweng.github.io）——体系化综述，长文深度</li>
+<li>Hamel Husain（hamel.dev）——LLM 评测（evals）领域权威</li>
+<li>Chip Huyen（huyenchip.com）——系统与生产视角</li>
+<li>Eugene Yan（eugeneyan.com）——应用/推荐系统 + LLM</li>
+<li>swyx（swyx.io / latent.space）——&quot;rise of the AI engineer&quot;布道者</li>
+<li>Sebastian Raschka（magazine.sebastianraschka.com）——模型原理向</li>
+<li>Jason Liu（jxnl.co）——结构化输出/instructor 作者</li>
+<li>Karpathy（karpathy.github.io + YouTube）——教学与工程直觉</li>
+</ul>
+<p><strong>第二梯队：实验室官方博客（一手，但偏发布向）</strong></p>
+<ul>
+<li>Anthropic Research + <strong>Anthropic Engineering</strong>（工程实践浓度极高，如 multi-agent 系统复盘）</li>
+<li>OpenAI Research + Cookbook（Cookbook 是实操金矿）</li>
+<li>Google DeepMind / Google Research</li>
+<li>Hugging Face Blog</li>
+<li>Meta AI / Mistral / Cohere / Qwen / DeepSeek（选读）</li>
+</ul>
+<p><strong>第三梯队：Newsletter 与评论人（聚合与观点）</strong></p>
+<ul>
+<li>Latent Space（swyz）——工程向访谈 + 周报</li>
+<li>Interconnects（Nathan Lambert）——开源与模型经济学</li>
+<li>Last Week in AI——事件聚合（用于查漏，不直接编译）</li>
+</ul>
+<p><strong>第四梯队：工程团队博客</strong></p>
+<ul>
+<li>Manus Blog（agent 工程复盘，浓度高）</li>
+<li>Vercel AI SDK Blog、LangChain Blog、Cursor Changelog（工具链动态）</li>
+</ul>
+<p><strong>发现层（不经 RSS，作为雷达）</strong></p>
+<ul>
+<li>Hacker News（每日扫一遍 AI 相关热帖）</li>
+<li>X/Twitter 私有 List（把上述博主 + 研究员拉一个 List）</li>
+<li>arXiv cs.CL / cs.AI / cs.LG（只看被博客/讨论引用的论文，不直接啃论文）</li>
+<li>GitHub Trending（Python）、r/LocalLLaMA</li>
+</ul>
+<p><strong>信源评分与复审机制</strong>：每条信源按 <code>相关度 × 稀缺度 × 稳定性</code> 打分，季度复审一次——三个月内一条都没产出的信源降级或剔除，新的补进来。</p>
+<hr>
+<h2>4. 内容加工管线（全流程）</h2>
+<figure class="diagram"><svg id="svg-pipeline" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="background-color:white" viewBox="4 4 882.5 2204.5" role="graphics-document document" aria-roledescription="flowchart-v2"><style>#svg-pipeline{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;font-size:13px;fill:#12324d;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#svg-pipeline .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#svg-pipeline .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#svg-pipeline .error-icon{fill:#fef9f0;}#svg-pipeline .error-text{fill:#01060f;stroke:#01060f;}#svg-pipeline .edge-thickness-normal{stroke-width:1px;}#svg-pipeline .edge-thickness-thick{stroke-width:3.5px;}#svg-pipeline .edge-pattern-solid{stroke-dasharray:0;}#svg-pipeline .edge-thickness-invisible{stroke-width:0;fill:none;}#svg-pipeline .edge-pattern-dashed{stroke-dasharray:3;}#svg-pipeline .edge-pattern-dotted{stroke-dasharray:2;}#svg-pipeline .marker{fill:#64788c;stroke:#64788c;}#svg-pipeline .marker.cross{stroke:#64788c;}#svg-pipeline svg{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;font-size:13px;}#svg-pipeline p{margin:0;}#svg-pipeline .label{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;color:#12324d;}#svg-pipeline .cluster-label text{fill:#01060f;}#svg-pipeline .cluster-label span{color:#01060f;}#svg-pipeline .cluster-label span p{background-color:transparent;}#svg-pipeline .label text,#svg-pipeline span{fill:#12324d;color:#12324d;}#svg-pipeline .node rect,#svg-pipeline .node circle,#svg-pipeline .node ellipse,#svg-pipeline .node polygon,#svg-pipeline .node path{fill:#eef8f7;stroke:#14a39a;stroke-width:1px;}#svg-pipeline .rough-node .label text,#svg-pipeline .node .label text,#svg-pipeline .image-shape .label,#svg-pipeline .icon-shape .label{text-anchor:middle;}#svg-pipeline .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#svg-pipeline .rough-node .label,#svg-pipeline .node .label,#svg-pipeline .image-shape .label,#svg-pipeline .icon-shape .label{text-align:center;}#svg-pipeline .node.clickable{cursor:pointer;}#svg-pipeline .root .anchor path{fill:#64788c!important;stroke-width:0;stroke:#64788c;}#svg-pipeline .arrowheadPath{fill:#0b0b0b;}#svg-pipeline .edgePaths .path{stroke:#64788c;stroke-width:1px;}#svg-pipeline .flowchart-link{stroke:#64788c;fill:none;}#svg-pipeline .edgeLabel{background-color:#ffffff;text-align:center;}#svg-pipeline .edgeLabel p{background-color:#ffffff;}#svg-pipeline .edgeLabel rect{opacity:0.5;background-color:#ffffff;fill:#ffffff;}#svg-pipeline .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#svg-pipeline .cluster rect{fill:#fef9f0;stroke:hsl(38.5714285714, 47.5%, 86.862745098%);stroke-width:1px;}#svg-pipeline .cluster text{fill:#01060f;}#svg-pipeline .cluster span{color:#01060f;}#svg-pipeline .node .collapsed-indicator{fill:hsl(38.5714285714, 47.5%, 86.862745098%);stroke:none;opacity:0.6;}#svg-pipeline .node .collapsed-separator{stroke:hsl(38.5714285714, 47.5%, 86.862745098%);stroke-width:0.75px;}#svg-pipeline div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;font-size:12px;background:#fef9f0;border:1px solid hsl(38.5714285714, 47.5%, 86.862745098%);border-radius:2px;pointer-events:none;z-index:100;}#svg-pipeline .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#12324d;}#svg-pipeline rect.text{fill:none;stroke-width:0;}#svg-pipeline .icon-shape,#svg-pipeline .image-shape{background-color:#ffffff;text-align:center;}#svg-pipeline .icon-shape p,#svg-pipeline .image-shape p{background-color:#ffffff;padding:2px;}#svg-pipeline .icon-shape .label rect,#svg-pipeline .image-shape .label rect{opacity:0.5;background-color:#ffffff;fill:#ffffff;}#svg-pipeline .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#svg-pipeline .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#svg-pipeline .node .neo-node{stroke:#14a39a;}#svg-pipeline [data-look="neo"].node rect,#svg-pipeline [data-look="neo"].cluster rect,#svg-pipeline [data-look="neo"].node polygon{stroke:url(#svg-pipeline-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-pipeline [data-look="neo"].swimlane.cluster rect{filter:none;}#svg-pipeline [data-look="neo"].node path{stroke:url(#svg-pipeline-gradient);stroke-width:1px;}#svg-pipeline [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-pipeline [data-look="neo"].node .neo-line path{stroke:#14a39a;filter:none;}#svg-pipeline [data-look="neo"].node circle{stroke:url(#svg-pipeline-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-pipeline [data-look="neo"].node circle .state-start{fill:#000000;}#svg-pipeline [data-look="neo"].icon-shape .icon{fill:url(#svg-pipeline-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-pipeline [data-look="neo"].icon-shape .icon-neo path{stroke:url(#svg-pipeline-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-pipeline :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="svg-pipeline_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-pipeline_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-pipeline_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-pipeline_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-pipeline_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-pipeline_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-pipeline_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-pipeline_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-pipeline_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="svg-pipeline_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="svg-pipeline_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="svg-pipeline_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"><g class="cluster" id="svg-pipeline-E" data-look="neo"><rect style="" x="235" y="871" width="200" height="327"/><g class="cluster-label" transform="translate(306.828125, 871)"><foreignObject width="56.34375" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel"><p>⑤ 分发层</p></span></div></foreignObject></g></g><g class="cluster" id="svg-pipeline-D" data-look="neo"><rect style="" x="235" y="484" width="200" height="327"/><g class="cluster-label" transform="translate(273.25, 484)"><foreignObject width="123.5" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel"><p>④ 加工层 · 人机协作</p></span></div></foreignObject></g></g><g class="cluster" id="svg-pipeline-C" data-look="neo"><rect style="" x="223.5" y="12" width="223" height="412"/><g class="cluster-label" transform="translate(286.25, 12)"><foreignObject width="97.5" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel"><p>③ 选题层 · 人工</p></span></div></foreignObject></g></g><g class="cluster" id="svg-pipeline-B" data-look="neo"><rect style="" x="234.5" y="1646" width="402" height="554.5"/><g class="cluster-label" transform="translate(371.2109375, 1646)"><foreignObject width="128.578125" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel"><p>② 初筛层 · LLM 辅助</p></span></div></foreignObject></g></g><g class="cluster" id="svg-pipeline-A" data-look="neo"><rect style="" x="33" y="1317.5" width="806" height="268.5"/><g class="cluster-label" transform="translate(348.25, 1317.5)"><foreignObject width="175.5" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel"><p>① 发现层 · 全自动（每小时）</p></span></div></foreignObject></g></g></g><g class="edges edgePaths"><path d="M335,1417.25L335,1449.9289321881345Q335,1457 342.0710678118655,1457L415.8889321881345,1457Q422.96,1457 422.96,1464.0710678118655L422.96,1495" id="svg-pipeline-L_A1_A5_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 156.38174438476562 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_A1_A5_0" data-points="W3sieCI6MzM1LCJ5IjoxNDE3LjI1fSx7IngiOjMzNSwieSI6MTQ1N30seyJ4Ijo0MjIuOTYsInkiOjE0NTd9LHsieCI6NDIyLjk2LCJ5IjoxNDk5fV0=" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M537,1427L537,1449.9289321881345Q537,1457 529.9289321881345,1457L456.11106781186544,1457Q449.03999999999996,1457 449.03999999999996,1464.0710678118655L449.03999999999996,1495" id="svg-pipeline-L_A2_A5_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 146.6317596435547 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_A2_A5_0" data-points="W3sieCI6NTM3LCJ5IjoxNDI3fSx7IngiOjUzNywieSI6MTQ1N30seyJ4Ijo0NDkuMDM5OTk5OTk5OTk5OTYsInkiOjE0NTd9LHsieCI6NDQ5LjAzOTk5OTk5OTk5OTk2LCJ5IjoxNDk5fV0=" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M739,1427L739,1461.9289321881345Q739,1469 731.9289321881345,1469L482.1910678118655,1469Q475.12,1469 475.12,1476.0710678118655L475.12,1495" id="svg-pipeline-L_A3_A5_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 322.5517883300781 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_A3_A5_0" data-points="W3sieCI6NzM5LCJ5IjoxNDI3fSx7IngiOjczOSwieSI6MTQ2OX0seyJ4Ijo0NzUuMTIsInkiOjE0Njl9LHsieCI6NDc1LjEyLCJ5IjoxNDk5fV0=" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M133,1427L133,1461.9289321881345Q133,1469 140.07106781186548,1469L389.8089321881345,1469Q396.88,1469 396.88,1476.0710678118655L396.88,1495" id="svg-pipeline-L_A4_A5_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 322.5517578125 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_A4_A5_0" data-points="W3sieCI6MTMzLCJ5IjoxNDI3fSx7IngiOjEzMywieSI6MTQ2OX0seyJ4IjozOTYuODgsInkiOjE0Njl9LHsieCI6Mzk2Ljg4LCJ5IjoxNDk5fV0=" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M435.99999999999994,1775L435.99999999999994,1795" id="svg-pipeline-L_B1_B2_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 16 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_B1_B2_0" data-points="W3sieCI6NDM1Ljk5OTk5OTk5OTk5OTk0LCJ5IjoxNzc1fSx7IngiOjQzNS45OTk5OTk5OTk5OTk5NCwieSI6MTc5OX1d" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M458.3166666666666,1932.1833262443542L458.3166666666666,1954.5L458.3166666666666,1977.4289321881345Q458.3166666666666,1984.5 465.3877344785321,1984.5L507.6955988548012,1984.5Q514.7666666666667,1984.5 514.7666666666667,1991.5710678118655L514.7666666666667,2090" id="svg-pipeline-L_B2_B3_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 204.93850708007812 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_B2_B3_0" data-points="W3sieCI6NDU4LjMxNjY2NjY2NjY2NjYsInkiOjE5MzIuMTgzMzI2MjQ0MzU0Mn0seyJ4Ijo0NTguMzE2NjY2NjY2NjY2NiwieSI6MTk1NC41fSx7IngiOjQ1OC4zMTY2NjY2NjY2NjY2LCJ5IjoxOTg0LjV9LHsieCI6NTE0Ljc2NjY2NjY2NjY2NjcsInkiOjE5ODQuNX0seyJ4Ijo1MTQuNzY2NjY2NjY2NjY2NywieSI6MjA5NH1d" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M413.6833333333333,1932.1833262443542L413.6833333333333,1954.5L413.6833333333333,1977.4289321881345Q413.6833333333333,1984.5 406.6122655214678,1984.5L363.30440114519877,1984.5Q356.2333333333333,1984.5 356.2333333333333,1991.5710678118655L356.2333333333333,2090" id="svg-pipeline-L_B2_B4_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 205.9384765625 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_B2_B4_0" data-points="W3sieCI6NDEzLjY4MzMzMzMzMzMzMzMsInkiOjE5MzIuMTgzMzI2MjQ0MzU0Mn0seyJ4Ijo0MTMuNjgzMzMzMzMzMzMzMywieSI6MTk1NC41fSx7IngiOjQxMy42ODMzMzMzMzMzMzMzLCJ5IjoxOTg0LjV9LHsieCI6MzU2LjIzMzMzMzMzMzMzMzMsInkiOjE5ODQuNX0seyJ4IjozNTYuMjMzMzMzMzMzMzMzMywieSI6MjA5NH1d" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M335,233.5L335,333" id="svg-pipeline-L_C1_C2_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 95.5 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_C1_C2_0" data-points="W3sieCI6MzM1LCJ5IjoyMzMuNX0seyJ4IjozMzUsInkiOjMzN31d" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M373.34999999999997,195.1499900817871L373.34999999999997,233.5L373.34999999999997,256.4289321881345Q373.34999999999997,263.5 380.42106781186544,263.5L415.9289321881345,263.5Q423,263.5 423,270.5710678118655L423,434L423,446.9289321881345Q423,454 430.0710678118655,454L851.9289321881345,454Q859,454 859,461.0710678118655L859,647.5L859,1257.75L859,1451.75L859,1608.9289321881345Q859,1616 851.9289321881345,1616L565.3044011451989,1616Q558.2333333333333,1616 558.2333333333333,1623.0710678118655L558.2333333333333,1636L558.2333333333333,2090" id="svg-pipeline-L_C1_B3_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 2661.281982421875 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_C1_B3_0" data-points="W3sieCI6MzczLjM0OTk5OTk5OTk5OTk3LCJ5IjoxOTUuMTQ5OTkwMDgxNzg3MX0seyJ4IjozNzMuMzQ5OTk5OTk5OTk5OTcsInkiOjIzMy41fSx7IngiOjM3My4zNDk5OTk5OTk5OTk5NywieSI6MjYzLjV9LHsieCI6NDIzLCJ5IjoyNjMuNX0seyJ4Ijo0MjMsInkiOjQzNH0seyJ4Ijo0MjMsInkiOjQ1NH0seyJ4Ijo4NTksInkiOjQ1NH0seyJ4Ijo4NTksInkiOjY0Ny41fSx7IngiOjg1OSwieSI6MTI1Ny43NX0seyJ4Ijo4NTksInkiOjE0NTEuNzV9LHsieCI6ODU5LCJ5IjoxNjE2fSx7IngiOjU1OC4yMzMzMzMzMzMzMzMzLCJ5IjoxNjE2fSx7IngiOjU1OC4yMzMzMzMzMzMzMzMzLCJ5IjoxNjM2fSx7IngiOjU1OC4yMzMzMzMzMzMzMzMzLCJ5IjoyMDk0fV0=" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M335,593.5L335,613.5" id="svg-pipeline-L_D1_D2_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 16 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_D1_D2_0" data-points="W3sieCI6MzM1LCJ5Ijo1OTMuNX0seyJ4IjozMzUsInkiOjYxNy41fV0=" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M335,680.5L335,700.5" id="svg-pipeline-L_D2_D3_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 16 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_D2_D3_0" data-points="W3sieCI6MzM1LCJ5Ijo2ODAuNX0seyJ4IjozMzUsInkiOjcwNC41fV0=" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M335,980.5L335,1000.5" id="svg-pipeline-L_E1_E2_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 16 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_E1_E2_0" data-points="W3sieCI6MzM1LCJ5Ijo5ODAuNX0seyJ4IjozMzUsInkiOjEwMDQuNX1d" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M335,1087L335,1107" id="svg-pipeline-L_E2_E3_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 16 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_E2_E3_0" data-points="W3sieCI6MzM1LCJ5IjoxMDg3fSx7IngiOjMzNSwieSI6MTExMX1d" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M436,1562L436,1596L436,1636L435.99999999999994,1688.5" id="svg-pipeline-L_A5_B1_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 122.5 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_A5_B1_0" data-points="W3sieCI6NDM2LCJ5IjoxNTYyfSx7IngiOjQzNiwieSI6MTU5Nn0seyJ4Ijo0MzYsInkiOjE2MzZ9LHsieCI6NDM1Ljk5OTk5OTk5OTk5OTk0LCJ5IjoxNjkyLjV9XQ==" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M312.76666666666665,2094L312.76666666666665,1636L312.76666666666665,1623.0710678118655Q312.76666666666665,1616 305.6955988548012,1616L19.071067811865476,1616Q12,1616 12,1608.9289321881345L12,1451.75L12,1257.75L12,1034.5L12,647.5L12,461.0710678118655Q12,454 19.071067811865476,454L238.92893218813452,454Q246,454 246,446.9289321881345L246,434L246,270.5710678118655Q246,263.5 253.07106781186548,263.5L289.5789321881345,263.5Q296.65,263.5 296.65,256.4289321881345L296.65,233.5L296.65,199.1499900817871" id="svg-pipeline-L_B4_C1_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 2460.2822265625 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_B4_C1_0" data-points="W3sieCI6MzEyLjc2NjY2NjY2NjY2NjY1LCJ5IjoyMDk0fSx7IngiOjMxMi43NjY2NjY2NjY2NjY2NSwieSI6MTYzNn0seyJ4IjozMTIuNzY2NjY2NjY2NjY2NjUsInkiOjE2MTZ9LHsieCI6MTIsInkiOjE2MTZ9LHsieCI6MTIsInkiOjE0NTEuNzV9LHsieCI6MTIsInkiOjEyNTcuNzV9LHsieCI6MTIsInkiOjEwMzQuNX0seyJ4IjoxMiwieSI6NjQ3LjV9LHsieCI6MTIsInkiOjQ1NH0seyJ4IjoyNDYsInkiOjQ1NH0seyJ4IjoyNDYsInkiOjQzNH0seyJ4IjoyNDYsInkiOjI2My41fSx7IngiOjI5Ni42NSwieSI6MjYzLjV9LHsieCI6Mjk2LjY1LCJ5IjoyMzMuNX0seyJ4IjoyOTYuNjUsInkiOjE5NS4xNDk5OTAwODE3ODcxfV0=" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M335,400L335,434L335,474L335,526.5" id="svg-pipeline-L_C2_D1_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 122.5 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_C2_D1_0" data-points="W3sieCI6MzM1LCJ5Ijo0MDB9LHsieCI6MzM1LCJ5Ijo0MzR9LHsieCI6MzM1LCJ5Ijo0NzR9LHsieCI6MzM1LCJ5Ijo1MzAuNX1d" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M335,787L335,821L335,861L335,913.5" id="svg-pipeline-L_D3_E1_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 122.5 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_D3_E1_0" data-points="W3sieCI6MzM1LCJ5Ijo3ODd9LHsieCI6MzM1LCJ5Ijo4MjF9LHsieCI6MzM1LCJ5Ijo4NjF9LHsieCI6MzM1LCJ5Ijo5MTcuNX1d" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/><path d="M335,1174L335,1208L335,1307.5L335,1369.75" id="svg-pipeline-L_E3_A1_0" class="edge-thickness-normal edge-pattern-dotted edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_E3_A1_0" data-points="W3sieCI6MzM1LCJ5IjoxMTc0fSx7IngiOjMzNSwieSI6MTIwOH0seyJ4IjozMzUsInkiOjEzMDcuNX0seyJ4IjozMzUsInkiOjEzNzMuNzV9XQ==" data-look="neo" marker-end="url(#svg-pipeline_flowchart-v2-pointEnd-margin)"/></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(514.7666666666667, 2024.25)"><g class="label" data-id="L_B2_B3_0" transform="translate(-6.5, -9.75)"><foreignObject width="13" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>否</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(356.2333333333333, 2024.25)"><g class="label" data-id="L_B2_B4_0" transform="translate(-6.5, -9.75)"><foreignObject width="13" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>是</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(335, 303.25)"><g class="label" data-id="L_C1_C2_0" transform="translate(-19.5, -9.75)"><foreignObject width="39" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>有增量</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(859, 1034.5)"><g class="label" data-id="L_C1_B3_0" transform="translate(-19.5, -9.75)"><foreignObject width="39" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>无增量</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(335, 1257.75)"><g class="label" data-id="L_E3_A1_0" transform="translate(-65, -9.75)"><foreignObject width="130" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel"><p>月度复盘调整信源权重</p></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default" id="svg-pipeline-flowchart-A1-0" data-look="neo" transform="translate(335, 1395.5)"><rect class="basic label-container" style="" x="-76" y="-21.75" width="152" height="43.5"/><g class="label" style="" transform="translate(-60, -9.75)"><rect/><foreignObject width="120" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>RSS 订阅 40+ 信源</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-A5-1" data-look="neo" transform="translate(436, 1530.5)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>采集入库 · 飞书多维表格</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-A2-2" data-look="neo" transform="translate(537, 1405.25)"><rect class="basic label-container" style="" x="-76" y="-21.75" width="152" height="43.5"/><g class="label" style="" transform="translate(-60, -9.75)"><rect/><foreignObject width="120" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>Hacker News API</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-A3-4" data-look="neo" transform="translate(739, 1405.25)"><rect class="basic label-container" style="" x="-76" y="-21.75" width="152" height="43.5"/><g class="label" style="" transform="translate(-60, -9.75)"><rect/><foreignObject width="120" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>X / Reddit 监听</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-A4-6" data-look="neo" transform="translate(133, 1395.5)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>arXiv / GitHub Trending</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-B1-9" data-look="neo" transform="translate(436, 1733.75)"><rect class="basic label-container" style="" x="-76" y="-41.25" width="152" height="82.5"/><g class="label" style="" transform="translate(-60, -29.25)"><rect/><foreignObject width="120" height="58.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>LLM 相关度打分<br />0-10 分 + 一句话理由</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-B2-10" data-look="neo" transform="translate(436, 1876.75)"><polygon points="77.75,0 155.5,-77.75 77.75,-155.5 0,-77.75" class="label-container" transform="translate(-77.25, 77.75)"/><g class="label" style="" transform="translate(-60, -9.75)"><rect/><foreignObject width="120" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>≥ 6 分？</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-B3-12" data-look="neo" transform="translate(536.5, 2115.75)"><rect class="basic label-container" style="" x="-76" y="-21.75" width="152" height="43.5"/><g class="label" style="" transform="translate(-60, -9.75)"><rect/><foreignObject width="120" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>低分归档留档备查</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-B4-14" data-look="neo" transform="translate(334.5, 2135.25)"><rect class="basic label-container" style="" x="-76" y="-41.25" width="152" height="82.5"/><g class="label" style="" transform="translate(-60, -29.25)"><rect/><foreignObject width="120" height="58.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>国内译本查重<br />公众号/知乎/掘金检索</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-C1-15" data-look="neo" transform="translate(335, 146)"><polygon points="87.5,0 175,-87.5 87.5,-175 0,-87.5" class="label-container" transform="translate(-87, 87.5)"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>独占性判断<br />无增量则放弃</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-C2-17" data-look="neo" transform="translate(335, 368.5)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>排期立项 · 确定产品形态</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-D1-20" data-look="neo" transform="translate(335, 562)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>LLM 翻译初稿（术语表约束）</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-D2-21" data-look="neo" transform="translate(335, 649)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>人工精修 + 导读 + 点评</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-D3-22" data-look="neo" transform="translate(335, 745.75)"><rect class="basic label-container" style="" x="-76" y="-41.25" width="152" height="82.5"/><g class="label" style="" transform="translate(-60, -29.25)"><rect/><foreignObject width="120" height="58.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>合规检查<br />授权状态 / 署名 / 原文链接</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-E1-23" data-look="neo" transform="translate(335, 949)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>排版导出 mdnice / Markdown</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-E2-24" data-look="neo" transform="translate(335, 1045.75)"><rect class="basic label-container" style="" x="-76" y="-41.25" width="152" height="82.5"/><g class="label" style="" transform="translate(-60, -29.25)"><rect/><foreignObject width="120" height="58.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>多平台发布<br />公众号 · 知乎 · 掘金 · 即刻</p></span></div></foreignObject></g></g><g class="node default" id="svg-pipeline-flowchart-E3-25" data-look="neo" transform="translate(335, 1142.5)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>数据回流：打开率 / 完读 / 转发</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="svg-pipeline-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="svg-pipeline-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><linearGradient id="svg-pipeline-gradient" gradientUnits="objectBoundingBox" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#14a39a" stop-opacity="1"/><stop offset="100%" stop-color="hsl(0, 0%, 90%)" stop-opacity="1"/></linearGradient></svg></figure><p><strong>人机分工原则</strong>（这是可持续性的关键）：</p>
+<ul>
+<li><strong>机器做</strong>：发现、采集、入库、相关度初筛、翻译初稿、格式化排版；</li>
+<li><strong>人只做四件事</strong>：选题判断（独占性）、终审精修、授权与作者关系维护、评论区互动。</li>
+</ul>
+<p><strong>独占性判断</strong>是整个管线的灵魂——发布前先查国内是否已有译本：</p>
+<ul>
+<li>已有高质量译本 → 放弃，不内卷；</li>
+<li>已有但粗糙/删减严重 → 做增量编译，并指出自己的差异；</li>
+<li>完全没有 → 抢时效（48 小时内出编译版）。</li>
+</ul>
+<hr>
+<h2>5. 产品形态与发布矩阵</h2>
+<figure class="diagram"><svg id="svg-matrix" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" style="background-color:white" viewBox="4 4 930 668" role="graphics-document document" aria-roledescription="flowchart-v2"><style>#svg-matrix{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;font-size:13px;fill:#12324d;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#svg-matrix .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#svg-matrix .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#svg-matrix .error-icon{fill:#fef9f0;}#svg-matrix .error-text{fill:#01060f;stroke:#01060f;}#svg-matrix .edge-thickness-normal{stroke-width:1px;}#svg-matrix .edge-thickness-thick{stroke-width:3.5px;}#svg-matrix .edge-pattern-solid{stroke-dasharray:0;}#svg-matrix .edge-thickness-invisible{stroke-width:0;fill:none;}#svg-matrix .edge-pattern-dashed{stroke-dasharray:3;}#svg-matrix .edge-pattern-dotted{stroke-dasharray:2;}#svg-matrix .marker{fill:#64788c;stroke:#64788c;}#svg-matrix .marker.cross{stroke:#64788c;}#svg-matrix svg{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;font-size:13px;}#svg-matrix p{margin:0;}#svg-matrix .label{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;color:#12324d;}#svg-matrix .cluster-label text{fill:#01060f;}#svg-matrix .cluster-label span{color:#01060f;}#svg-matrix .cluster-label span p{background-color:transparent;}#svg-matrix .label text,#svg-matrix span{fill:#12324d;color:#12324d;}#svg-matrix .node rect,#svg-matrix .node circle,#svg-matrix .node ellipse,#svg-matrix .node polygon,#svg-matrix .node path{fill:#eef8f7;stroke:#14a39a;stroke-width:1px;}#svg-matrix .rough-node .label text,#svg-matrix .node .label text,#svg-matrix .image-shape .label,#svg-matrix .icon-shape .label{text-anchor:middle;}#svg-matrix .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#svg-matrix .rough-node .label,#svg-matrix .node .label,#svg-matrix .image-shape .label,#svg-matrix .icon-shape .label{text-align:center;}#svg-matrix .node.clickable{cursor:pointer;}#svg-matrix .root .anchor path{fill:#64788c!important;stroke-width:0;stroke:#64788c;}#svg-matrix .arrowheadPath{fill:#0b0b0b;}#svg-matrix .edgePaths .path{stroke:#64788c;stroke-width:1px;}#svg-matrix .flowchart-link{stroke:#64788c;fill:none;}#svg-matrix .edgeLabel{background-color:#ffffff;text-align:center;}#svg-matrix .edgeLabel p{background-color:#ffffff;}#svg-matrix .edgeLabel rect{opacity:0.5;background-color:#ffffff;fill:#ffffff;}#svg-matrix .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#svg-matrix .cluster rect{fill:#fef9f0;stroke:hsl(38.5714285714, 47.5%, 86.862745098%);stroke-width:1px;}#svg-matrix .cluster text{fill:#01060f;}#svg-matrix .cluster span{color:#01060f;}#svg-matrix .node .collapsed-indicator{fill:hsl(38.5714285714, 47.5%, 86.862745098%);stroke:none;opacity:0.6;}#svg-matrix .node .collapsed-separator{stroke:hsl(38.5714285714, 47.5%, 86.862745098%);stroke-width:0.75px;}#svg-matrix div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;font-size:12px;background:#fef9f0;border:1px solid hsl(38.5714285714, 47.5%, 86.862745098%);border-radius:2px;pointer-events:none;z-index:100;}#svg-matrix .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#12324d;}#svg-matrix rect.text{fill:none;stroke-width:0;}#svg-matrix .icon-shape,#svg-matrix .image-shape{background-color:#ffffff;text-align:center;}#svg-matrix .icon-shape p,#svg-matrix .image-shape p{background-color:#ffffff;padding:2px;}#svg-matrix .icon-shape .label rect,#svg-matrix .image-shape .label rect{opacity:0.5;background-color:#ffffff;fill:#ffffff;}#svg-matrix .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#svg-matrix .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#svg-matrix .node .neo-node{stroke:#14a39a;}#svg-matrix [data-look="neo"].node rect,#svg-matrix [data-look="neo"].cluster rect,#svg-matrix [data-look="neo"].node polygon{stroke:url(#svg-matrix-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-matrix [data-look="neo"].swimlane.cluster rect{filter:none;}#svg-matrix [data-look="neo"].node path{stroke:url(#svg-matrix-gradient);stroke-width:1px;}#svg-matrix [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-matrix [data-look="neo"].node .neo-line path{stroke:#14a39a;filter:none;}#svg-matrix [data-look="neo"].node circle{stroke:url(#svg-matrix-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-matrix [data-look="neo"].node circle .state-start{fill:#000000;}#svg-matrix [data-look="neo"].icon-shape .icon{fill:url(#svg-matrix-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-matrix [data-look="neo"].icon-shape .icon-neo path{stroke:url(#svg-matrix-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-matrix :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="svg-matrix_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-matrix_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-matrix_flowchart-v2-pointEnd-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-matrix_flowchart-v2-pointStart-margin" class="marker flowchart-v2" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-matrix_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-matrix_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="svg-matrix_flowchart-v2-circleEnd-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-matrix_flowchart-v2-circleStart-margin" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="svg-matrix_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="svg-matrix_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="svg-matrix_flowchart-v2-crossEnd-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="svg-matrix_flowchart-v2-crossStart-margin" class="marker cross flowchart-v2" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"><g class="cluster" id="svg-matrix-P" data-look="neo"><rect style="" x="514" y="28.05000000000001" width="412" height="585.5"/><g class="cluster-label" transform="translate(694, 28.05000000000001)"><foreignObject width="52" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel"><p>分发渠道</p></span></div></foreignObject></g></g><g class="cluster" id="svg-matrix-M" data-look="neo"><rect style="" x="234" y="12" width="200" height="652"/><g class="cluster-label" transform="translate(295, 12)"><foreignObject width="78" height="19.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel"><p>三种产品形态</p></span></div></foreignObject></g></g></g><g class="edges edgePaths"><path d="M164,343.375L176.92893218813452,343.375Q184,343.375 184,336.3039321881345L184,155.57106781186548Q184,148.5 191.07106781186548,148.5L224,148.5L254,148.5" id="svg-matrix-L_S_W_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 275.54669189453125 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_S_W_0" data-points="W3sieCI6MTY0LCJ5IjozNDMuMzc1fSx7IngiOjE4NCwieSI6MzQzLjM3NX0seyJ4IjoxODQsInkiOjE0OC41fSx7IngiOjIyNCwieSI6MTQ4LjV9LHsieCI6MjU4LCJ5IjoxNDguNX1d" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/><path d="M164,354.125L201.5625,354.125Q204,354.125 204,356.5625L204,356.5625Q204,359 206.4375,359L224,359L254,359" id="svg-matrix-L_S_F_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 89.03829956054688 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_S_F_0" data-points="W3sieCI6MTY0LCJ5IjozNTQuMTI1fSx7IngiOjIwNCwieSI6MzU0LjEyNX0seyJ4IjoyMDQsInkiOjM1OX0seyJ4IjoyMjQsInkiOjM1OX0seyJ4IjoyNTgsInkiOjM1OX1d" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/><path d="M164,364.875L176.92893218813452,364.875Q184,364.875 184,371.9460678118655L184,552.6789321881345Q184,559.75 191.07106781186548,559.75L224,559.75L254,559.75" id="svg-matrix-L_S_K_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 275.5467529296875 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_S_K_0" data-points="W3sieCI6MTY0LCJ5IjozNjQuODc1fSx7IngiOjE4NCwieSI6MzY0Ljg3NX0seyJ4IjoxODQsInkiOjU1OS43NX0seyJ4IjoyMjQsInkiOjU1OS43NX0seyJ4IjoyNTgsInkiOjU1OS43NX1d" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/><path d="M410,174.89999999999998L444,174.89999999999998L456.9289321881345,174.89999999999998Q464,174.89999999999998 464,181.97106781186545L464,205.07893218813456Q464,212.15000000000003 471.0710678118655,212.15000000000003L504,212.15000000000003L534,212.15" id="svg-matrix-L_W_P1_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 151.92172241210938 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_W_P1_0" data-points="W3sieCI6NDEwLCJ5IjoxNzQuODk5OTk5OTk5OTk5OTh9LHsieCI6NDQ0LCJ5IjoxNzQuODk5OTk5OTk5OTk5OTh9LHsieCI6NDY0LCJ5IjoxNzQuODk5OTk5OTk5OTk5OTh9LHsieCI6NDY0LCJ5IjoyMTIuMTUwMDAwMDAwMDAwMDN9LHsieCI6NTA0LCJ5IjoyMTIuMTUwMDAwMDAwMDAwMDN9LHsieCI6NTM4LCJ5IjoyMTIuMTV9XQ==" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/><path d="M410,122.1L444,122.10000000000001L456.9289321881345,122.10000000000001Q464,122.10000000000001 464,115.02893218813453L464,113.12106781186549Q464,106.05000000000001 471.0710678118655,106.05000000000001L504,106.05000000000001L534,106.05000000000001" id="svg-matrix-L_W_P5_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 130.72171020507812 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_W_P5_0" data-points="W3sieCI6NDEwLCJ5IjoxMjIuMX0seyJ4Ijo0NDQsInkiOjEyMi4xMDAwMDAwMDAwMDAwMX0seyJ4Ijo0NjQsInkiOjEyMi4xMDAwMDAwMDAwMDAwMX0seyJ4Ijo0NjQsInkiOjEwNi4wNTAwMDAwMDAwMDAwMX0seyJ4Ijo1MDQsInkiOjEwNi4wNTAwMDAwMDAwMDAwMX0seyJ4Ijo1MzgsInkiOjEwNi4wNTAwMDAwMDAwMDAwMX1d" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/><path d="M410,329.15L444,329.15L456.9289321881345,329.15Q464,329.15 464,322.0789321881345L464,233.02106781186546Q464,225.95 471.0710678118655,225.95L504,225.95L534,225.95000000000002" id="svg-matrix-L_F_P1_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 217.8717041015625 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_F_P1_0" data-points="W3sieCI6NDEwLCJ5IjozMjkuMTV9LHsieCI6NDQ0LCJ5IjozMjkuMTV9LHsieCI6NDY0LCJ5IjozMjkuMTV9LHsieCI6NDY0LCJ5IjoyMjUuOTV9LHsieCI6NTA0LCJ5IjoyMjUuOTV9LHsieCI6NTM4LCJ5IjoyMjUuOTUwMDAwMDAwMDAwMDJ9XQ==" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/><path d="M410,359L444,359L476.9289321881345,359Q484,359 484,351.9289321881345L484,339.1210678118655Q484,332.05 491.0710678118655,332.05L504,332.05L534,332.05" id="svg-matrix-L_F_P2_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 141.62171936035156 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_F_P2_0" data-points="W3sieCI6NDEwLCJ5IjozNTl9LHsieCI6NDQ0LCJ5IjozNTl9LHsieCI6NDg0LCJ5IjozNTl9LHsieCI6NDg0LCJ5IjozMzIuMDV9LHsieCI6NTA0LCJ5IjozMzIuMDV9LHsieCI6NTM4LCJ5IjozMzIuMDV9XQ==" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/><path d="M410,388.85L444,388.85L456.9289321881345,388.85Q464,388.85 464,395.9210678118655L464,437.97893218813454Q464,445.05 471.0710678118655,445.05L504,445.05L534,445.05" id="svg-matrix-L_F_P3_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 170.8716583251953 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_F_P3_0" data-points="W3sieCI6NDEwLCJ5IjozODguODV9LHsieCI6NDQ0LCJ5IjozODguODV9LHsieCI6NDY0LCJ5IjozODguODV9LHsieCI6NDY0LCJ5Ijo0NDUuMDV9LHsieCI6NTA0LCJ5Ijo0NDUuMDV9LHsieCI6NTM4LCJ5Ijo0NDUuMDV9XQ==" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/><path d="M410,536.6L444,536.6L456.9289321881345,536.6Q464,536.6 464,543.6710678118654L464,550.9789321881344Q464,558.05 471.0710678118655,558.05L504,558.0500000000001L534,558.05" id="svg-matrix-L_K_P4_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 136.1217041015625 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_K_P4_0" data-points="W3sieCI6NDEwLCJ5Ijo1MzYuNn0seyJ4Ijo0NDQsInkiOjUzNi42fSx7IngiOjQ2NCwieSI6NTM2LjZ9LHsieCI6NDY0LCJ5Ijo1NTguMDV9LHsieCI6NTA0LCJ5Ijo1NTguMDUwMDAwMDAwMDAwMX0seyJ4Ijo1MzgsInkiOjU1OC4wNX1d" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/><path d="M410,582.9L444,582.9L456.9289321881345,582.9Q464,582.9 464,589.9710678118654L464,594.4789321881344Q464,601.55 471.0710678118655,601.55L504,601.5500000000001L712.9289321881345,601.5500000000001Q720,601.5500000000001 720,594.4789321881346L720,424.2710678118655Q720,417.20000000000005 727.0710678118655,417.20000000000005L746,417.20000000000005" id="svg-matrix-L_K_P6_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 524.3433837890625 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_K_P6_0" data-points="W3sieCI6NDEwLCJ5Ijo1ODIuOX0seyJ4Ijo0NDQsInkiOjU4Mi45fSx7IngiOjQ2NCwieSI6NTgyLjl9LHsieCI6NDY0LCJ5Ijo2MDEuNTV9LHsieCI6NTA0LCJ5Ijo2MDEuNTUwMDAwMDAwMDAwMX0seyJ4Ijo3MjAsInkiOjYwMS41NTAwMDAwMDAwMDAxfSx7IngiOjcyMCwieSI6NDE3LjIwMDAwMDAwMDAwMDA1fSx7IngiOjc1MCwieSI6NDE3LjIwMDAwMDAwMDAwMDA1fV0=" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/><path d="M690,219.05L712.9289321881345,219.05Q720,219.05 720,226.1210678118655L720,396.32893218813456Q720,403.40000000000003 727.0710678118655,403.40000000000003L746,403.40000000000003" id="svg-matrix-L_P1_P6_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style="stroke-dasharray: 0 0 231.02169799804688 4; stroke-dashoffset: 0;;" data-edge="true" data-et="edge" data-id="L_P1_P6_0" data-points="W3sieCI6NjkwLCJ5IjoyMTkuMDV9LHsieCI6NzIwLCJ5IjoyMTkuMDV9LHsieCI6NzIwLCJ5Ijo0MDMuNDAwMDAwMDAwMDAwMDN9LHsieCI6NzUwLCJ5Ijo0MDMuNDAwMDAwMDAwMDAwMDN9XQ==" data-look="neo" marker-end="url(#svg-matrix_flowchart-v2-pointEnd-margin)"/></g><g class="edgeLabels"/><g class="nodes"><g class="node default" id="svg-matrix-flowchart-S-0" data-look="neo" transform="translate(88, 354.125)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>选题池<br />（独占性过滤后）</p></span></div></foreignObject></g></g><g class="node default" id="svg-matrix-flowchart-W-1" data-look="neo" transform="translate(334, 148.5)"><rect class="basic label-container" style="" x="-76" y="-90" width="152" height="180"/><g class="label" style="" transform="translate(-60, -78)"><rect/><foreignObject width="120" height="156"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>周报《Agent 工程周报》<br />每周一 8:00 · 10-15 条精选<br />摘要 + 一句话点评 + 链接<br />低边际成本 · 冷启动主力</p></span></div></foreignObject></g></g><g class="node default" id="svg-matrix-flowchart-F-2" data-look="neo" transform="translate(334, 359)"><rect class="basic label-container" style="" x="-76" y="-70.5" width="152" height="141"/><g class="label" style="" transform="translate(-60, -58.5)"><rect/><foreignObject width="120" height="117"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>深度编译<br />每周 1-2 篇<br />授权全文翻译 + 2000 字导读<br />标杆内容 · 建立专业声望</p></span></div></foreignObject></g></g><g class="node default" id="svg-matrix-flowchart-K-3" data-look="neo" transform="translate(334, 559.75)"><rect class="basic label-container" style="" x="-76" y="-80.25" width="152" height="160.5"/><g class="label" style="" transform="translate(-60, -68.25)"><rect/><foreignObject width="120" height="136.5"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>主题知识库<br />持续沉淀<br />评测 / 上下文工程 / 工具调用<br />多智能体 / 记忆与规划<br />可检索 · 长尾流量</p></span></div></foreignObject></g></g><g class="node default" id="svg-matrix-flowchart-P1-4" data-look="neo" transform="translate(614, 219.05)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>微信公众号<br />主阵地</p></span></div></foreignObject></g></g><g class="node default" id="svg-matrix-flowchart-P2-5" data-look="neo" transform="translate(614, 332.05)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>掘金<br />工程师社区</p></span></div></foreignObject></g></g><g class="node default" id="svg-matrix-flowchart-P3-6" data-look="neo" transform="translate(614, 445.05)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>知乎<br />问答式改写 · SEO</p></span></div></foreignObject></g></g><g class="node default" id="svg-matrix-flowchart-P4-7" data-look="neo" transform="translate(614, 558.05)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>GitHub Pages<br />知识库站点</p></span></div></foreignObject></g></g><g class="node default" id="svg-matrix-flowchart-P5-8" data-look="neo" transform="translate(614, 106.05000000000001)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>即刻 / X<br />碎片观点引流</p></span></div></foreignObject></g></g><g class="node default" id="svg-matrix-flowchart-P6-9" data-look="neo" transform="translate(826, 410.3)"><rect class="basic label-container" style="" x="-76" y="-31.5" width="152" height="63"/><g class="label" style="" transform="translate(-60, -19.5)"><rect/><foreignObject width="120" height="39"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: nowrap; line-height: 1.5; max-width: 120px; text-align: center; width: 120px;"><span class="nodeLabel"><p>邮件订阅<br />自有阵地备份</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="svg-matrix-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="svg-matrix-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><linearGradient id="svg-matrix-gradient" gradientUnits="objectBoundingBox" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#14a39a" stop-opacity="1"/><stop offset="100%" stop-color="hsl(0, 0%, 90%)" stop-opacity="1"/></linearGradient></svg></figure><p><strong>三种形态的分工</strong>：</p>
+<ol>
+<li><strong>周报（冷启动主力）</strong>：边际成本最低、信任建立最快。固定每周一 8:00 发布，让读者形成&quot;周一来我这看一眼这周发生了什么&quot;的习惯；</li>
+<li><strong>深度编译（声望内容）</strong>：只做头部内容（如 Anthropic 的多智能体系统复盘这类），授权 + 全文翻译 + 自己的导读，一年沉淀 30~50 篇就是壁垒；</li>
+<li><strong>主题知识库（长尾资产）</strong>：把编译内容按主题重组（评测 / 上下文工程 / 工具调用 / 多智能体 / 记忆与规划），用 GitHub Pages 建可检索站点，吃搜索长尾流量。</li>
+</ol>
+<p><strong>渠道适配要点</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>渠道</th>
+<th>内容形态</th>
+<th>适配动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>公众号</td>
+<td>周报 + 深度编译</td>
+<td>mdnice 排版；头条放编译、次条放周报</td>
+</tr>
+<tr>
+<td>掘金</td>
+<td>深度编译</td>
+<td>直接 Markdown，标题工程化（&quot;如何做 X&quot;）</td>
+</tr>
+<tr>
+<td>知乎</td>
+<td>深度编译改问答</td>
+<td>绑定已有高流量问题回答，吃 SEO</td>
+</tr>
+<tr>
+<td>即刻 / X</td>
+<td>碎片观点</td>
+<td>周报单条拆发，引流公众号</td>
+</tr>
+<tr>
+<td>GitHub Pages</td>
+<td>知识库</td>
+<td>docusaurus/vitepress，作品集与求职名片双属性</td>
+</tr>
+</tbody></table>
+<p><strong>节奏纪律</strong>：周更为主，不做日更。日更是精力黑洞且内容质量守不住——&quot;固定节奏 + 每期保质&quot;比&quot;高频轰炸&quot;涨粉更稳。</p>
+<hr>
+<h2>6. 自动化技术方案（可直接落地）</h2>
+<p><strong>工具栈</strong>：Python + GitHub Actions（定时采集）+ LLM API（初筛/翻译）+ 飞书多维表格（选题库）+ mdnice（排版）。</p>
+<p><strong>选题库（飞书多维表格）字段设计</strong>：</p>
+<p><code>标题 / 作者 / 来源 / 原文链接 / 发布时间 / 摘要 / 相关度分 / 国内译本查重结果 / 授权状态 / 产品形态 / 状态（待筛→选题→加工中→待发→已发布）/ 排期 / 发布链接 / 数据表现</code></p>
+<p><strong>仓库结构建议</strong>：</p>
+<pre><code>blog_reposting/
+├── sources.csv               # 信源清单（单一事实来源，喂给采集脚本）
+├── glossary.yaml             # 术语表（翻译一致性约束）
+├── auth_ledger.csv           # 授权台账
+├── pipeline/
+│   ├── fetch_rss.py          # RSS + HN + arXiv 采集 → 写多维表格
+│   ├── score.py              # LLM 相关度打分（prompt 内置评分标准）
+│   ├── dedup.py              # 国内已有译本查重（站内搜索 API）
+│   ├── translate.py          # 术语表约束的翻译初稿
+│   └── export.py             # Markdown → 各平台排版导出
+├── content/
+│   ├── weekly/               # 周报 issue 归档（w2026-46.md ...）
+│   └── features/             # 深度编译归档
+└── .github/workflows/
+    └── ingest.yml            # cron: 每小时跑一次 fetch + score
+</code></pre>
+<p><strong>关键脚本逻辑</strong>：</p>
+<ul>
+<li><code>fetch_rss.py</code>：<code>feedparser</code> 读 <code>sources.csv</code> 里的 RSS 地址，HN 用 Algolia API，arXiv 用官方 API；新条目去重后经飞书开放平台 API 写入多维表格；</li>
+<li><code>score.py</code>：每条内容给 LLM 的 prompt 固定为&quot;你是 Agent 开发领域的技术编辑，按与&#39;LLM/Agent 工程实践&#39;的相关度打 0-10 分并给一句话理由&quot;，≥6 分才进入人工视野；</li>
+<li><code>translate.py</code>：先加载 <code>glossary.yaml</code> 做术语约束翻译，产出带「译注标记」的初稿，人工只做终审。</li>
+</ul>
+<p><strong>成本估算</strong>：LLM API（初筛 + 翻译初稿）每月约几十元人民币量级；飞书多维表格、GitHub Actions（公开仓库）免费。<strong>整个项目的边际成本主要是人的时间：每周约 6~10 小时</strong>（周报 2<del>3h + 深度编译 3</del>4h + 运营互动 1~2h）。</p>
+<hr>
+<h2>7. 90 天落地路线图</h2>
+<figure class="diagram"><svg id="svg-roadmap" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784 412" style="background-color:white" role="graphics-document document" aria-roledescription="gantt"><style>#svg-roadmap{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;font-size:13px;fill:#12324d;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#svg-roadmap .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#svg-roadmap .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#svg-roadmap .error-icon{fill:#fef9f0;}#svg-roadmap .error-text{fill:#01060f;stroke:#01060f;}#svg-roadmap .edge-thickness-normal{stroke-width:1px;}#svg-roadmap .edge-thickness-thick{stroke-width:3.5px;}#svg-roadmap .edge-pattern-solid{stroke-dasharray:0;}#svg-roadmap .edge-thickness-invisible{stroke-width:0;fill:none;}#svg-roadmap .edge-pattern-dashed{stroke-dasharray:3;}#svg-roadmap .edge-pattern-dotted{stroke-dasharray:2;}#svg-roadmap .marker{fill:#64788c;stroke:#64788c;}#svg-roadmap .marker.cross{stroke:#64788c;}#svg-roadmap svg{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;font-size:13px;}#svg-roadmap p{margin:0;}#svg-roadmap .mermaid-main-font{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;}#svg-roadmap .exclude-range{fill:#eeeeee;}#svg-roadmap .section{stroke:none;opacity:0.2;}#svg-roadmap .section0{fill:#fef9f0;}#svg-roadmap .section2{fill:#eef8f7;}#svg-roadmap .section1,#svg-roadmap .section3{fill:white;opacity:0.2;}#svg-roadmap .sectionTitle0{fill:#01060f;}#svg-roadmap .sectionTitle1{fill:#01060f;}#svg-roadmap .sectionTitle2{fill:#01060f;}#svg-roadmap .sectionTitle3{fill:#01060f;}#svg-roadmap .sectionTitle{text-anchor:start;font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;}#svg-roadmap .grid .tick{stroke:lightgrey;opacity:0.8;shape-rendering:crispEdges;}#svg-roadmap .grid .tick text{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;fill:#12324d;}#svg-roadmap .grid path{stroke-width:0;}#svg-roadmap .today{fill:none;stroke:red;stroke-width:2px;}#svg-roadmap .task{stroke-width:2;}#svg-roadmap .taskText{text-anchor:middle;font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;}#svg-roadmap .taskTextOutsideRight{fill:#12324d;text-anchor:start;font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;}#svg-roadmap .taskTextOutsideLeft{fill:#12324d;text-anchor:end;}#svg-roadmap .task.clickable{cursor:pointer;}#svg-roadmap .taskText.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#svg-roadmap .taskTextOutsideLeft.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#svg-roadmap .taskTextOutsideRight.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#svg-roadmap .taskText0,#svg-roadmap .taskText1,#svg-roadmap .taskText2,#svg-roadmap .taskText3{fill:#12324d;}#svg-roadmap .task0,#svg-roadmap .task1,#svg-roadmap .task2,#svg-roadmap .task3{fill:#eef8f7;stroke:#14a39a;}#svg-roadmap .taskTextOutside0,#svg-roadmap .taskTextOutside2{fill:#12324d;}#svg-roadmap .taskTextOutside1,#svg-roadmap .taskTextOutside3{fill:#12324d;}#svg-roadmap .active0,#svg-roadmap .active1,#svg-roadmap .active2,#svg-roadmap .active3{fill:hsl(174, 41.6666666667%, 100%);stroke:#eef8f7;}#svg-roadmap .activeText0,#svg-roadmap .activeText1,#svg-roadmap .activeText2,#svg-roadmap .activeText3{fill:#12324d!important;}#svg-roadmap .done0,#svg-roadmap .done1,#svg-roadmap .done2,#svg-roadmap .done3{stroke:grey;fill:lightgrey;stroke-width:2;}#svg-roadmap .doneText0,#svg-roadmap .doneText1,#svg-roadmap .doneText2,#svg-roadmap .doneText3{fill:#12324d!important;}#svg-roadmap .doneText0.taskTextOutsideLeft,#svg-roadmap .doneText0.taskTextOutsideRight,#svg-roadmap .doneText1.taskTextOutsideLeft,#svg-roadmap .doneText1.taskTextOutsideRight,#svg-roadmap .doneText2.taskTextOutsideLeft,#svg-roadmap .doneText2.taskTextOutsideRight,#svg-roadmap .doneText3.taskTextOutsideLeft,#svg-roadmap .doneText3.taskTextOutsideRight{fill:#12324d!important;}#svg-roadmap .crit0,#svg-roadmap .crit1,#svg-roadmap .crit2,#svg-roadmap .crit3{stroke:#ff8888;fill:red;stroke-width:2;}#svg-roadmap .activeCrit0,#svg-roadmap .activeCrit1,#svg-roadmap .activeCrit2,#svg-roadmap .activeCrit3{stroke:#ff8888;fill:hsl(174, 41.6666666667%, 100%);stroke-width:2;}#svg-roadmap .doneCrit0,#svg-roadmap .doneCrit1,#svg-roadmap .doneCrit2,#svg-roadmap .doneCrit3{stroke:#ff8888;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges;}#svg-roadmap .milestone{transform:rotate(45deg) scale(0.8,0.8);}#svg-roadmap .milestoneText{font-style:italic;}#svg-roadmap .doneCritText0,#svg-roadmap .doneCritText1,#svg-roadmap .doneCritText2,#svg-roadmap .doneCritText3{fill:#12324d!important;}#svg-roadmap .doneCritText0.taskTextOutsideLeft,#svg-roadmap .doneCritText0.taskTextOutsideRight,#svg-roadmap .doneCritText1.taskTextOutsideLeft,#svg-roadmap .doneCritText1.taskTextOutsideRight,#svg-roadmap .doneCritText2.taskTextOutsideLeft,#svg-roadmap .doneCritText2.taskTextOutsideRight,#svg-roadmap .doneCritText3.taskTextOutsideLeft,#svg-roadmap .doneCritText3.taskTextOutsideRight{fill:#12324d!important;}#svg-roadmap .vert{stroke:navy;}#svg-roadmap .vertText{font-size:15px;text-anchor:middle;fill:navy!important;}#svg-roadmap .activeCritText0,#svg-roadmap .activeCritText1,#svg-roadmap .activeCritText2,#svg-roadmap .activeCritText3{fill:#12324d!important;}#svg-roadmap .titleText{text-anchor:middle;font-size:18px;fill:#01060f;font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;}#svg-roadmap .node .neo-node{stroke:#14a39a;}#svg-roadmap [data-look="neo"].node rect,#svg-roadmap [data-look="neo"].cluster rect,#svg-roadmap [data-look="neo"].node polygon{stroke:url(#svg-roadmap-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-roadmap [data-look="neo"].swimlane.cluster rect{filter:none;}#svg-roadmap [data-look="neo"].node path{stroke:url(#svg-roadmap-gradient);stroke-width:1px;}#svg-roadmap [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-roadmap [data-look="neo"].node .neo-line path{stroke:#14a39a;filter:none;}#svg-roadmap [data-look="neo"].node circle{stroke:url(#svg-roadmap-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-roadmap [data-look="neo"].node circle .state-start{fill:#000000;}#svg-roadmap [data-look="neo"].icon-shape .icon{fill:url(#svg-roadmap-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-roadmap [data-look="neo"].icon-shape .icon-neo path{stroke:url(#svg-roadmap-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#svg-roadmap :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g/><g class="grid" transform="translate(75, 362)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,-327V0.5H634.5V-327"/><g class="tick" opacity="1" transform="translate(43.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">11-22</text></g><g class="tick" opacity="1" transform="translate(93.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">11-29</text></g><g class="tick" opacity="1" transform="translate(142.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">12-06</text></g><g class="tick" opacity="1" transform="translate(192.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">12-13</text></g><g class="tick" opacity="1" transform="translate(242.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">12-20</text></g><g class="tick" opacity="1" transform="translate(292.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">12-27</text></g><g class="tick" opacity="1" transform="translate(342.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">01-03</text></g><g class="tick" opacity="1" transform="translate(392.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">01-10</text></g><g class="tick" opacity="1" transform="translate(442.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">01-17</text></g><g class="tick" opacity="1" transform="translate(492.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">01-24</text></g><g class="tick" opacity="1" transform="translate(541.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">01-31</text></g><g class="tick" opacity="1" transform="translate(591.5,0)"><line stroke="currentColor" y2="-327"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">02-07</text></g></g><g><rect x="0" y="48" width="746.5" height="24" class="section section0"/><rect x="0" y="72" width="746.5" height="24" class="section section0"/><rect x="0" y="96" width="746.5" height="24" class="section section0"/><rect x="0" y="120" width="746.5" height="24" class="section section0"/><rect x="0" y="144" width="746.5" height="24" class="section section1"/><rect x="0" y="168" width="746.5" height="24" class="section section1"/><rect x="0" y="192" width="746.5" height="24" class="section section1"/><rect x="0" y="216" width="746.5" height="24" class="section section2"/><rect x="0" y="240" width="746.5" height="24" class="section section2"/><rect x="0" y="264" width="746.5" height="24" class="section section2"/><rect x="0" y="288" width="746.5" height="24" class="section section3"/><rect x="0" y="312" width="746.5" height="24" class="section section3"/><rect x="0" y="336" width="746.5" height="24" class="section section3"/></g><g><rect id="svg-roadmap-a1" rx="3" ry="3" x="75" y="50" width="50" height="20" transform-origin="100px 60px" class="task task0"/><rect id="svg-roadmap-a2" rx="3" ry="3" x="75" y="74" width="36" height="20" transform-origin="93px 84px" class="task task0"/><rect id="svg-roadmap-a3" rx="3" ry="3" x="75" y="98" width="50" height="20" transform-origin="100px 108px" class="task task0"/><rect id="svg-roadmap-a4" rx="3" ry="3" x="103" y="122" width="29" height="20" transform-origin="117.5px 132px" class="task task0"/><rect id="svg-roadmap-b1" rx="3" ry="3" x="125" y="146" width="71" height="20" transform-origin="160.5px 156px" class="task task1"/><rect id="svg-roadmap-b2" rx="3" ry="3" x="132" y="170" width="50" height="20" transform-origin="157px 180px" class="task task1"/><rect id="svg-roadmap-b3" rx="3" ry="3" x="196" y="194" width="50" height="20" transform-origin="221px 204px" class="task task1"/><rect id="svg-roadmap-c1" rx="3" ry="3" x="246" y="218" width="214" height="20" transform-origin="353px 228px" class="task task2"/><rect id="svg-roadmap-c2" rx="3" ry="3" x="246" y="242" width="214" height="20" transform-origin="353px 252px" class="task task2"/><rect id="svg-roadmap-c3" rx="3" ry="3" x="246" y="266" width="142" height="20" transform-origin="317px 276px" class="task task2"/><rect id="svg-roadmap-d1" rx="3" ry="3" x="460" y="290" width="99" height="20" transform-origin="509.5px 300px" class="task task3"/><rect id="svg-roadmap-d2" rx="3" ry="3" x="559" y="314" width="150" height="20" transform-origin="634px 324px" class="task task3"/><rect id="svg-roadmap-d3" rx="3" ry="3" x="559" y="338" width="150" height="20" transform-origin="634px 348px" class="task task3"/><text id="svg-roadmap-a1-text" font-size="11" x="130" y="63.5" class="taskTextOutsideRight taskTextOutside0  width-99">信源订阅与采集脚本         </text><text id="svg-roadmap-a2-text" font-size="11" x="116" y="87.5" class="taskTextOutsideRight taskTextOutside0  width-110">飞书多维表格字段设计        </text><text id="svg-roadmap-a3-text" font-size="11" x="130" y="111.5" class="taskTextOutsideRight taskTextOutside0  width-126.359375">术语表 v1 + 授权邮件模板    </text><text id="svg-roadmap-a4-text" font-size="11" x="137" y="135.5" class="taskTextOutsideRight taskTextOutside0  width-124.65625">公众号注册 / 命名 / 定位    </text><text id="svg-roadmap-b1-text" font-size="11" x="201" y="159.5" class="taskTextOutsideRight taskTextOutside1  width-77">前两期周报试产             </text><text id="svg-roadmap-b2-text" font-size="11" x="187" y="183.5" class="taskTextOutsideRight taskTextOutside1  width-66">首篇深度编译               </text><text id="svg-roadmap-b3-text" font-size="11" x="251" y="207.5" class="taskTextOutsideRight taskTextOutside1  width-93.875">20 人种子读者内测           </text><text id="svg-roadmap-c1-text" font-size="11" x="353" y="231.5" class="taskText taskText2  width-66">周报稳定周更               </text><text id="svg-roadmap-c2-text" font-size="11" x="353" y="255.5" class="taskText taskText2  width-134.9375">授权谈判（目标 5 家信源）    </text><text id="svg-roadmap-c3-text" font-size="11" x="317" y="279.5" class="taskText taskText2  width-100.828125">知乎 / 掘金矩阵铺设         </text><text id="svg-roadmap-d1-text" font-size="11" x="509.5" y="303.5" class="taskText taskText3  width-99">数据复盘与信源调权          </text><text id="svg-roadmap-d2-text" font-size="11" x="634" y="327.5" class="taskText taskText3  width-72.046875">知识库 v1 上线             </text><text id="svg-roadmap-d3-text" font-size="11" x="634" y="351.5" class="taskText taskText3  width-102">招募 1-2 位协作译者         </text></g><g><text dy="0em" x="10" y="98" font-size="11" class="sectionTitle sectionTitle0"><tspan alignment-baseline="central" x="10">基建期 · 第1-2周</tspan></text><text dy="0em" x="10" y="182" font-size="11" class="sectionTitle sectionTitle1"><tspan alignment-baseline="central" x="10">试运行 · 第3-4周</tspan></text><text dy="0em" x="10" y="254" font-size="11" class="sectionTitle sectionTitle2"><tspan alignment-baseline="central" x="10">稳定期 · 第2个月</tspan></text><text dy="0em" x="10" y="326" font-size="11" class="sectionTitle sectionTitle3"><tspan alignment-baseline="central" x="10">复盘扩展 · 第3个月</tspan></text></g><g class="today"><line x1="44" x2="44" y1="25" y2="387" class="today"/></g><text x="392" y="25" class="titleText">90 天落地路线图（示例以 2026-11-16 起跑，可平移）</text></svg></figure><p><strong>里程碑验收标准</strong>：</p>
+<ul>
+<li>第 4 周末：2 期周报 + 1 篇编译上线，种子读者 20 人，收到第一轮反馈；</li>
+<li>第 8 周末：周报打开率 ≥ 25%，授权信源 ≥ 3 家，知乎/掘金开始有自然流量；</li>
+<li>第 12 周末：知识库 v1（≥ 30 篇沉淀内容），周报稳定打开率 ≥ 30%，形成固定投稿/读者社群雏形。</li>
+</ul>
+<hr>
+<h2>8. 指标体系与风险对策</h2>
+<p><strong>北极星指标</strong>：周报打开率（会话打开率，小而美账号健康基准 25%~40%）。</p>
+<p><strong>过程指标</strong>：完读率、转发/在看率（&gt;3% 为佳）、知乎掘金长尾阅读、授权博主数（护城河指标）、读者群周活跃发言数。</p>
+<p><strong>风险与对策</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>风险</th>
+<th>对策</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>版权投诉</td>
+<td>授权台账 + 摘要模式优先 + 24h 下架机制；模式 A/B/C 分级控制</td>
+</tr>
+<tr>
+<td>公众号限流/封号</td>
+<td>多平台矩阵分散 + <strong>尽早建立邮件订阅</strong>（自有阵地，平台无法没收）</td>
+</tr>
+<tr>
+<td>内容同质化（被机构媒体覆盖）</td>
+<td>独占性筛选机制：只做无译本/有增量的内容</td>
+</tr>
+<tr>
+<td>精力不可持续</td>
+<td>自动化管线 + 固定周更节奏 + 明确&quot;不做日更&quot;纪律</td>
+</tr>
+<tr>
+<td>译者个人风格依赖</td>
+<td>术语表 + 文风指南沉淀在仓库，可交接、可协作</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>附录 A：授权请求邮件模板（英文）</h2>
+<pre><code>Subject: Permission to translate your post into Chinese
+
+Hi {Name},
+
+I&#39;m {Your Name}, a developer based in China. I run a Chinese-language
+publication focused on LLM &amp; agent engineering ({Publication Name},
+{Link}), aimed at hands-on developers in China.
+
+I&#39;d like to ask your permission to translate your post &quot;{Post Title}&quot;
+({URL}) into Chinese for our readers. If you agree, we will:
+
+1. Clearly attribute you as the original author with a link to the
+   original post at the top;
+2. Faithfully preserve your technical points, marking any translator
+   notes separately;
+3. Never put it behind any paywall — it stays free.
+
+We think your writing on {specific topic} is exactly what Chinese
+developers are missing right now. Would love to hear your thoughts.
+
+Thank you!
+{Your Name}
+</code></pre>
+<p>（中文版可对照写一份；独立博主回复率通常不低，尤其活跃在 X 上的作者。）</p>
+<h2>附录 B：核心术语表 v1（种子，持续扩充）</h2>
+<table>
+<thead>
+<tr>
+<th>英文</th>
+<th>推荐译法</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>context engineering</td>
+<td>上下文工程</td>
+<td>已成共识</td>
+</tr>
+<tr>
+<td>tool use / function calling</td>
+<td>工具调用 / 函数调用</td>
+<td>保留英文亦可</td>
+</tr>
+<tr>
+<td>agent</td>
+<td>智能体 / Agent</td>
+<td>首次出现标注，正文多用 Agent</td>
+</tr>
+<tr>
+<td>agentic</td>
+<td>自主式 / agentic</td>
+<td>语境决定，不强译</td>
+</tr>
+<tr>
+<td>evals</td>
+<td>评测</td>
+<td>不译作&quot;评估&quot;</td>
+</tr>
+<tr>
+<td>scaffolding</td>
+<td>脚手架</td>
+<td></td>
+</tr>
+<tr>
+<td>agentic loop</td>
+<td>Agent 循环</td>
+<td></td>
+</tr>
+<tr>
+<td>reasoning model</td>
+<td>推理模型</td>
+<td></td>
+</tr>
+<tr>
+<td>chain-of-thought</td>
+<td>思维链</td>
+<td></td>
+</tr>
+<tr>
+<td>retrieval-augmented generation (RAG)</td>
+<td>检索增强生成</td>
+<td>首次标注 RAG</td>
+</tr>
+<tr>
+<td>fine-tuning</td>
+<td>微调</td>
+<td></td>
+</tr>
+<tr>
+<td>RLHF</td>
+<td>基于人类反馈的强化学习</td>
+<td>首次标注缩写</td>
+</tr>
+<tr>
+<td>guardrails</td>
+<td>护栏</td>
+<td></td>
+</tr>
+<tr>
+<td>observability / tracing</td>
+<td>可观测性 / 链路追踪</td>
+<td></td>
+</tr>
+<tr>
+<td>Model Context Protocol (MCP)</td>
+<td>模型上下文协议</td>
+<td>首次标注 MCP</td>
+</tr>
+<tr>
+<td>multi-agent system</td>
+<td>多智能体系统</td>
+<td></td>
+</tr>
+<tr>
+<td>token budget</td>
+<td>token 预算</td>
+<td>token 不译</td>
+</tr>
+<tr>
+<td>context window</td>
+<td>上下文窗口</td>
+<td></td>
+</tr>
+<tr>
+<td>hit rate</td>
+<td>命中率</td>
+<td>检索语境</td>
+</tr>
+<tr>
+<td>agent harness</td>
+<td>Agent 执行框架</td>
+<td>语境定夺</td>
+</tr>
+</tbody></table>
+<h2>附录 C：信源清单</h2>
+<p>见同目录 <code>信源清单.csv</code>（可直接作为 <code>sources.csv</code> 喂给采集脚本），字段：类别 / 名称 / 地址 / 价值点 / 优先级 / 授权状态。</p>
+
+
+</main>
+</body>
+</html>
