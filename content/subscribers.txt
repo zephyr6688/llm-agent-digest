@@ -1,0 +1,3 @@
+# Agent 工程周报订阅者（每行一个邮箱，# 开头为注释）
+# 例：
+# someone@example.com
