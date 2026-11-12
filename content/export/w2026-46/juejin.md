@@ -6,6 +6,8 @@
 
 本期速览：15 条精选（近 7 天，相关度 ≥ 6）。
 
+本周两条主线：**小模型价格战进入"agent 执行单元"阶段**——Muse Ember 上市即贴着 Artificial Analysis 效率前沿的 Pareto 线打，但长上下文定价藏着 3 倍跳价陷阱；**"为 agent 造界面与评测"持续升温**——浏览器厂商联合下场给 coding agent 喂知识、邮件 API 靠 AEO 吃到推荐位、湿实验基准示范了什么叫认真的 agent 评测。本期最值得读的一条是斯坦福 CS146S：当 agent 一个 prompt 就能写完去年的作业，大学课程应该教什么。
+
 ## Introducing Our Smallest, Most Efficient Model: Muse Ember
 
 Simon Willison · 2026-11-10
@@ -42,7 +44,7 @@ Release: datasette-llm 0.1a10 Fixes a bug that affected my agent.datasette.io de
 
 Latent Space · 2026-11-08
 
-What do you assign when a coding agent can finish last year’s homework in one prompt? In the second run of Stanford’s CS146S, Mihail Eric brought open-source maintainers into the course. Students have to learn an unfamiliar repo, propose a change, and ...
+What do you assign when a coding agent can finish last year's homework in one prompt? In the second run of Stanford's CS146S, Mihail Eric brought open-source maintainers into the course. Students have to to learn an unfamiliar repo, propose a change, and ...
 
 原文：https://latent.space/p/one_million_ai_engineer_special_how_stanford_teaches_ai-native_engineering_mihail_eric_monaco/
 
@@ -98,7 +100,7 @@ Where does answer engine optimization (AEO) end and agent experience begin? Insi
 
 Google DeepMind Blog · 2026-11-10
 
-AlphaProof Code agents wrote three million lines of proofs in Lean to verify Signal’s core encryption.
+AlphaProof Code agents wrote three million lines of proofs in Lean to verify Signal's core encryption.
 
 原文：https://deepmind.google/blog/introducing-alphaproof-code/
 

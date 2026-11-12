@@ -29,7 +29,7 @@ ITEM_RE = re.compile(
 
 def parse_draft(md_text: str) -> dict:
     title_m = re.search(r"^# (.+)$", md_text, re.M)
-    intro_m = re.search(r"^> (.+)$", md_text, re.M)
+    intro_m = re.findall(r"^> (.+)$", md_text, re.M)
     footer_m = re.search(r"^---\n(\*\*.+\*)$", md_text, re.M | re.S)
     items = []
     for m in ITEM_RE.finditer(md_text):
@@ -44,7 +44,7 @@ def parse_draft(md_text: str) -> dict:
         })
     return {
         "title": title_m.group(1) if title_m else "Agent 工程周报",
-        "intro": intro_m.group(1) if intro_m else "",
+        "intro": "\n\n".join(intro_m),
         "items": items,
         "footer": (footer_m.group(1).strip() if footer_m
                    else "*《Agent 工程周报》· 每周一发布*"),
@@ -89,9 +89,10 @@ class WechatChannel(Channel):
                 f"**点评**：{comment}\n\n"
                 f"原文：{it['url']}\n"
             )
+        intro = article["intro"] or "<!-- TODO 导读（3-5 句，本期趋势与最值得读的一条） -->"
         content = (
             f"# {article['title']}\n\n"
-            f"<!-- TODO 导读（3-5 句，本期趋势与最值得读的一条） -->\n\n"
+            f"> {intro}\n\n"
             f"<!-- 署名纪律：每条编译内容保留作者与原文链接；"
             f"自己写作占比足够再声明原创 -->\n\n"
             + "\n".join(items_md)
@@ -117,8 +118,8 @@ class ZhihuChannel(Channel):
             f"# {article['title']}\n\n"
             f"> 本文首发于公众号，同步发布于知乎。\n\n"
             f"{article['intro']}\n\n"
-            f"<!-- TODO 知乎打法：除专栏同步外，找 1-2 个已有高流量相关问题"
-            f"（如『如何设计 agent 评测』），把本期内容量身改写成回答 -->\n\n"
+            f"<!-- 知乎打法：专栏同步用本文件；回答式改写见 content/zhihu/ 内容包"
+            f"（专栏文章 + 回答草稿 + 选题池） -->\n\n"
             f"{items_md}\n\n---\n\n{article['footer']}\n"
         )
         return [{"filename": self.filename, "content": content}]

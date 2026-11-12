@@ -4,97 +4,99 @@
 
 本期速览：15 条精选（近 7 天，相关度 ≥ 6）。
 
-<!-- TODO 知乎打法：除专栏同步外，找 1-2 个已有高流量相关问题（如『如何设计 agent 评测』），把本期内容量身改写成回答 -->
+本周两条主线：**小模型价格战进入"agent 执行单元"阶段**——Muse Ember 上市即贴着 Artificial Analysis 效率前沿的 Pareto 线打，但长上下文定价藏着 3 倍跳价陷阱；**"为 agent 造界面与评测"持续升温**——浏览器厂商联合下场给 coding agent 喂知识、邮件 API 靠 AEO 吃到推荐位、湿实验基准示范了什么叫认真的 agent 评测。本期最值得读的一条是斯坦福 CS146S：当 agent 一个 prompt 就能写完去年的作业，大学课程应该教什么。
+
+<!-- 知乎打法：专栏同步用本文件；回答式改写见 content/zhihu/ 内容包（专栏文章 + 回答草稿 + 选题池） -->
 
 **[Introducing Our Smallest, Most Efficient Model: Muse Ember](https://simonwillison.net/2026/Nov/10/muse-ember/)** · Simon Willison · 2026-11-10
 
 Introducing Our Smallest, Most Efficient Model: Muse Ember Meta AI just launched their entry in the Claude Haiku/GPT Luna category: Muse Ember, which they describe as: [...] our smallest and most efficient model designed for complex reasoning execution and the work agents repeat all day: tool calls, coding subtasks, routing, extraction, and long document parsing. For shorter prompts it's priced the same as GPT-6 Luna and Claude Haiku 5.5 - both are $0.10/million input tokens and $0.50/million output. Today's other big model release, Claude Fable 5.2, is 80x that price at $8/$40. The pricing is
 
-
+点评：小模型军备竞赛的本质是在抢"agent 一天重复一千次的那些动作"（工具调用、路由、抽取、长文档解析）的单价。Simon 算的账值得抄下来：短 prompt 下 Ember/Luna/Haiku 同价，但超过各自阈值后 Ember 跳到 $0.30/$1.50——比 Haiku 的长文本档还贵，做长上下文 agent 选型时这个细节会直接改变成本结论。
 
 **[CodeRabbit scales agentic software development and ships 20x more](https://openai.com/index/coderabbit-codex-daybreak)** · OpenAI Research · 2026-11-09
 
 CodeRabbit uses OpenAI models to govern and trust AI-generated code and Codex to ship 20 times more software with the same engineering team.
 
-
+点评：案例文营销浓度不低，"20x 吞吐"听听就好；真正值得看的是它的隐含架构：AI 生成代码之后，靠另一套 AI 治理和建立对代码的信任——生成与验证分离成两层，这是做多 agent 生产管线绕不开的模式。
 
 **[llm-anthropic 0.31](https://simonwillison.net/2026/Nov/9/llm-anthropic/)** · Simon Willison · 2026-11-09
 
 Release: llm-anthropic 0.31 Anthropic released Fable 5.2 and Mythos 5.2 today. Fable 5.2 is currently ranked first on Artificial Analysis . Anthropic say it "solved two open problems in the physics of black holes", so clearly their internal benchmarks have become more ambitious! I've added the new models to llm-anthropic , so you can now run prompts through Fable 5.2 like this: uv tool install llm llm install llm-anthropic llm keys set anthropic # paste key here llm -m claude-fable-5.2 "Generate an SVG of a pelican riding a bicycle" I ran pelicans at all five reasoning levels - low , medium ,
 
-
+点评：注意 Simon 的工作方式：新模型发布当天，他把模型接进自己的 llm 工具链，然后拿同一个任务（画鹈鹕骑自行车）把各推理档全跑一遍对比。这就是一套人人可抄的"模型快速体检管线"——比看跑分榜快得多，也更接近你的真实负载。
 
 **[datasette-llm 0.1a10](https://simonwillison.net/2026/Nov/4/datasette-llm/)** · Simon Willison · 2026-11-04
 
 Release: datasette-llm 0.1a10 Fixes a bug that affected my agent.datasette.io demo site, where the set of available LLM models was not correctly restricted to just those in the configuration. Tags: llm , datasette
 
-
+点评：一句话版本新闻，收录理由是它背后那个 agent.datasette.io——把 LLM 配置暴露给 runtime agent 的公开 demo，配置边界出 bug 正说明"agent 能用哪些模型"本身就是一个需要认真治理的权限问题。
 
 **[[One Million AI Engineer Special] How Stanford Teaches AI-Native Engineering — Mihail Eric, Monaco](https://latent.space/p/one_million_ai_engineer_special_how_stanford_teaches_ai-native_engineering_mihail_eric_monaco/)** · Latent Space · 2026-11-08
 
-What do you assign when a coding agent can finish last year’s homework in one prompt? In the second run of Stanford’s CS146S, Mihail Eric brought open-source maintainers into the course. Students have to learn an unfamiliar repo, propose a change, and ...
+What do you assign when a coding agent can finish last year's homework in one prompt? In the second run of Stanford's CS146S, Mihail Eric brought open-source maintainers into the course. Students have to to learn an unfamiliar repo, propose a change, and ...
 
-
+点评：本期最值得精读的一篇。当 coding agent 一个 prompt 就能写完去年的作业，CS146S 的回答是把作业换成"学一个陌生开源仓库、提一个变更、向可能合并它的 maintainer 解释你的 patch"——真实开源协作就是课程本身。加上他在 Monaco 团队的落地经验（"买来学，留下来自建"、给 on-call agent 接 Datadog 和 GitHub、让 repo 变得 agent-ready），这是对"AI 时代工程师还该学什么"最认真的一份答案。
 
 **[Quoting Nilay Patel](https://simonwillison.net/2026/Nov/6/nilay-patel/)** · Simon Willison · 2026-11-06
 
 The products aren't good enough to sell people on the costs. You cannot tell people that you have to listen to the whine of a data center in their backyard for AI overviews and some of the most hilarious deep fake slop in history. It's not worth it. It just isn't worth it to anyone. And agents aren't real and they might not be being used the way that anyone wants them to yet. All these companies are spending more than they're making on these products. Refrigerators holding blood storage in Europe are being hacked. The costs are too high. The benefits are not real. And if you connect that to co
 
-
+点评：The Verge 主编这段话是行业情绪的温度计，刻薄但戳中要害：产品收益撑不起成本叙事。做 agent 开发的人不妨每月读一次这类唱衰——不是要认同结论，而是逼自己回答"用户到底为什么为你的 agent 付费"。
 
 **[Measuring how AI agents handle everyday wet-lab science](https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science)** · OpenAI Research · 2026-11-06
 
 OpenAI introduces BioBasicsBench, a 100-task benchmark measuring how well AI agents interpret raw experimental data and handle everyday wet-lab science.
 
-
+点评：这是 agent 评测设计的教科书示范：100 个来自真实实验的任务（胶图、菌落照片、显微镜视频这种"论文里不会出现的脏数据"），rubric 逐项给分，能区分"结论对了但过程错了"。三个失败案例尤其精彩——把培养皿标签上的抗生素看错、把 z-stack 扫描当成细胞消失、把预设假设凌驾于对照组之上。做 agent evals 的人应该把 failure cases 当作必读章节。
 
 **[ChatGPT Desktop forwards your SSH agent to remote machines](https://news.ycombinator.com/item?id=50422628)** · Hacker News
 
 HN 热帖 · 216 points · 78 comments
 
-
+点评：桌面 agent 默认转发 SSH 凭据引发的集体讨论——便利功能与默认权限边界的经典冲突。给 agent 接工具之前先想清楚：哪些动作必须显式批准、哪些凭据永远不该进 agent 的可达范围。
 
 **[Show HN: Get your coding agent off ~2019 JavaScript, onto modern web primitives](https://github.com/GoogleChrome/modern-web-guidance)** · Hacker News
 
 HN 热帖 · 354 points · 106 comments
 
-
+点评：Chrome、Edge、Firefox 和 MDN 四方联合维护的项目，直面 coding agent 的老毛病——训练数据里全是旧模式，于是生成一堆 2019 年风格的多余 JS。做法值得抄：把领域最佳实践做成 token 高效的 skill 按需注入，并用 eval 闭环证明 uplift（各 agent +28~36 个百分点）。这是"给 agent 注入专家知识"模式的官方样板。
 
 **[6 Hours of YouTube and 85 handtyped pages of notes on LLM Inference – Start here](https://github.com/samir-sarwar/samir-vllm)** · Hacker News
 
 HN 热帖 · 79 points · 12 comments
 
-
+点评：想系统补推理侧底子（KV cache、调度、PagedAttention 这条线）的一站式材料，6 小时视频配 85 页手打笔记，比零散读博客体系得多。
 
 **[Designing for Agents — Zeno Rocha, Resend](https://latent.space/p/resend/)** · Latent Space · 2026-11-10
 
 Where does answer engine optimization (AEO) end and agent experience begin? Inside Resend, from the docs that help Claude Code pick an email API to the tools it uses to send.
 
-
+点评：AEO（答案引擎优化）正在变成 API 产品的生死题：研究中 Claude Code 的 102 次邮件方案推荐里 Resend 被选中 64 次，而 SendGrid 只剩 7 次第一顺位。细节很妙——给定价页 URL 加个 .md 后缀让 agent 一次读懂数据。对做开发者产品的人，"机器可读性"已经不是工程洁癖而是获客渠道。
 
 **[Introducing AlphaProof Code: a breakthrough in verifying complex software at depth](https://deepmind.google/blog/introducing-alphaproof-code/)** · Google DeepMind Blog · 2026-11-10
 
-AlphaProof Code agents wrote three million lines of proofs in Lean to verify Signal’s core encryption.
+AlphaProof Code agents wrote three million lines of proofs in Lean to verify Signal's core encryption.
 
-
+点评：分水岭事件：多 agent 协作生成 600 万行 Lean 证明，第一次把一个广泛部署的密码协议（Signal）从"设计层验证"推进到"设备上运行的实际代码"级别，4 周完成过去专家团队数年的工作，人工复核只剩 1%。对 agent 可信度问题这也是个方向性答案——让机器检查器（Lean）来担保 agent 产出，而不是人肉抽检。
 
 **[Yonkers Rises](https://simonwillison.net/2026/Nov/10/yonkers-rises/)** · Simon Willison · 2026-11-10
 
 Tool: Yonkers Rises I realized I didn't know where Yonkers was, so I looked it up on Google Maps and then, to help embed its location and shape in my head (and to try out Claude Fable 5.2's 3D modeling and animation skills), I prompted Fable 5.2 Medium to: Make a three js animation where yonkers stands up as a big mech (cool stand up motion) and átomos around manhattan and queens and Brooklyn, use openstreetmap mapping data It correctly deduced that "átomos" was a mobile keyboard typo for "stomps": Tags: three-js , llms , ai , generative-ai , claude-mythos-fable
 
-
+点评：一则玩具帖，但和本期 Muse Ember 那条互相印证：模型输出质量与推理档位并不单调对应——Fable 5.2 把键盘手误"átomos"正确脑补成"stomps"，这种鲁棒性比跑分更能说明模型代际进步。
 
 **[Cogent and OpenAI build cyber defense factories for enterprises](https://openai.com/index/cogent-security)** · OpenAI Research · 2026-11-10
 
 Cogent combines OpenAI models with enterprise context to help automatically remediate vulnerabilities with agents.
 
-
+点评：安全厂商用 agent 自动修复企业漏洞的落地案例，一句话归档；与 AlphaProof 那条对照着看——防御侧的"自动修复"和"可验证正确性"是同一个问题的两种解法。
 
 **[Hide your slop PR descriptions behind](https://simonwillison.net/2026/Nov/9/details-summary/)** · Simon Willison · 2026-11-09
 
 Most of the changes I make to my projects these days come in the form of PRs opened for me by Claude Code or Codex. The PR is my unit of work - I use them to bundle commits together, iterating on them until a feature is complete, document decisions and then merge the finished result. Today's coding agents are great at writing PR descriptions. They're too good at describing the work The problem is that they are too good. An agent-written PR description is accurate and comprehensive. It describes the problem, the detailed solution, and the steps taken to verify it. That's a lot of information to
 
-
+点评：一个真实到发笑的工作流摩擦：agent 写的 PR 描述"好得过分"，把人的注意力淹没在细节里。Simon 的解法是用 HTML 的 details/summary 折叠默认收起。它指向一个更大的话题——代码生成速度超过 review 速度之后，瓶颈正快速移到 review 一侧（呼应 Latent Space 的《How to Kill the Code Review》）。
 
 
 ---
