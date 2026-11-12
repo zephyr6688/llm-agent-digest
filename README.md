@@ -3,6 +3,10 @@
 打破信息差的冷启动工程：海外一手信源 → 自动采集 → 初筛评分 → 周报草稿 → 多渠道导出。
 整体方案见 `方案.md` / `方案.html`；本 README 只讲怎么跑。
 
+> 远端仓库：https://github.com/zephyr6688/llm-agent-digest （origin 已配置，SSH 推送）
+> GitHub Pages：仓库 Settings → Pages 选择 main 分支 /docs 目录后，
+> 知识库地址为 https://zephyr6688.github.io/llm-agent-digest/
+
 ## 快速开始（3 条命令跑通全流程）
 
 ```bash
