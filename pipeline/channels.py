@@ -265,29 +265,39 @@ class GithubPagesChannel(Channel):
     filename = "github_pages.md"
 
     def render(self, article: dict):
-        # 主产物直接写入 docs/（Pages 从 main 分支 /docs 提供），
-        # content/export/ 下只留一份链接说明。
+        # 产物写入 docs/：issues.json 索引 + 终端风 HTML 页面
+        # （GitHub Pages 从 main 分支 /docs 提供），content/export/ 下留说明。
+        import json
         import pathlib
+        import sys
+
+        sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+        import site_theme
+
         root = pathlib.Path(__file__).resolve().parent.parent
         site = root / (self.cfg.get("site_dir", "docs"))
         posts = site / "posts"
         posts.mkdir(parents=True, exist_ok=True)
-        (posts / f"{article['issue']}.md").write_text(
-            f"# {article['title']}\n\n{article['intro']}\n\n"
-            + "\n".join(
-                f"- **[{it['title']}]({it['url']})** · {it['meta']}\n"
-                f"  - {it['summary']}\n"
-                for it in article["items"]
-            )
-            + f"\n\n---\n\n{article['footer']}\n",
-            encoding="utf-8",
-        )
-        issues = sorted((p.name for p in posts.glob("w*.md")), reverse=True)
-        index = [
-            "# Agent 工程知识库\n",
-            "> 海外一手 LLM/Agent 工程内容中文编译存档，按周组织。\n",
-        ] + [f"- [{n[:-3]}](posts/{n})" for n in issues]
-        (site / "index.md").write_text("\n".join(index) + "\n", encoding="utf-8")
+
+        (posts / f"{article['issue']}.html").write_text(
+            site_theme.render_post(article), encoding="utf-8")
+
+        index_path = site / "issues.json"
+        issues = []
+        if index_path.exists():
+            try:
+                issues = json.loads(index_path.read_text(encoding="utf-8"))
+            except Exception:
+                issues = []
+        entry = {"issue": article["issue"], "title": article["title"],
+                 "count": len(article.get("items", []))}
+        issues = [i for i in issues if i.get("issue") != article["issue"]]
+        issues.append(entry)
+        index_path.write_text(json.dumps(issues, ensure_ascii=False, indent=1),
+                             encoding="utf-8")
+        (site / "index.html").write_text(site_theme.render_index(issues),
+                                          encoding="utf-8")
+        (site / ".nojekyll").write_text("", encoding="utf-8")
         return [{"filename": self.filename,
                  "content": f"（本渠道产物直接写入 {site}，此处无文件）\n"}]
 

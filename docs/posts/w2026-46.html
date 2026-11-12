@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Agent 工程周报 · 海外一手内容中文编译">
+<meta property="og:title" content="Agent 工程周报 · 第 1 期（2026 年第 46 周） · agent-digest">
+<meta property="og:description" content="Agent 工程周报 · 海外一手内容中文编译">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0f16'/%3E%3Cpath d='M7 11l7 5-7 5' stroke='%2356c8f2' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M16 22h9' stroke='%235ee08a' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+<title>Agent 工程周报 · 第 1 期（2026 年第 46 周） · agent-digest</title>
+<style>
+:root{
+  --bg:#0a0f16; --surface:#0f1621; --surface2:#141e2b; --line:#1e2c3d;
+  --ink:#d8e3f0; --muted:#768aa1;
+  --cyan:#56c8f2; --green:#5ee08a; --amber:#e2b45f; --note:#3f8f63;
+  --mono:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;
+  --sans:-apple-system,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;padding:0 14px 64px;
+  background:var(--bg) ;
+  background-image:
+    linear-gradient(rgba(86,200,242,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(86,200,242,.035) 1px,transparent 1px);
+  background-size:34px 34px;
+  color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.75;
+}
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline}
+.term{
+  max-width:860px;margin:28px auto 0;
+  background:var(--surface);
+  border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  box-shadow:0 18px 50px rgba(2,6,12,.55);
+}
+.bar{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 14px;background:var(--surface2);
+  border-bottom:1px solid var(--line);
+}
+.dot{width:11px;height:11px;border-radius:50%;flex:none}
+.d1{background:#e0656a}.d2{background:#e2b45f}.d3{background:#5ee08a}
+.bar .path{
+  font-family:var(--mono);font-size:12.5px;color:var(--muted);
+  margin-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.shell{padding:22px 20px 26px}
+@media (min-width:768px){.shell{padding:30px 36px 36px}}
+.prompt{font-family:var(--mono);font-size:13.5px;margin:0 0 4px;color:var(--muted)}
+.prompt .u{color:var(--green)}
+.prompt .cwd{color:var(--cyan)}
+.prompt .cmd{color:var(--ink)}
+.out{margin:2px 0 18px;color:var(--ink)}
+.cursor{
+  display:inline-block;width:9px;height:17px;vertical-align:-3px;
+  background:var(--cyan);
+}
+@media (prefers-reduced-motion:no-preference){
+  .cursor{animation:blink 1.1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+}
+h1.site{
+  font-family:var(--mono);font-size:26px;letter-spacing:.5px;
+  margin:14px 0 6px;color:var(--ink);font-weight:700;
+}
+h1.site .g{color:var(--green)}
+.tagline{color:var(--muted);margin:0 0 26px;max-width:64ch}
+.kicker{font-family:var(--mono);font-size:12.5px;color:var(--cyan);
+  margin:26px 0 10px}
+h2.sec{font-family:var(--mono);font-size:15px;color:var(--muted);
+  margin:26px 0 12px;font-weight:500;border-bottom:1px dashed var(--line);
+  padding-bottom:8px}
+/* 期次列表 */
+.issue{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;
+  font-family:var(--mono);font-size:13.5px;
+  padding:11px 12px;margin:0 0 8px;border:1px solid var(--line);
+  border-radius:6px;background:var(--surface2);
+  transition:border-color .15s;
+}
+.issue:hover{border-color:var(--cyan);text-decoration:none}
+.issue .id{color:var(--green);flex:none}
+.issue .t{color:var(--ink);flex:1 1 auto;min-width:0;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;font-family:var(--sans);font-size:14px}
+.issue .n{color:var(--muted);flex:none}
+/* 条目卡片 */
+.entry{
+  border:1px solid var(--line);border-radius:8px;
+  background:var(--surface2);padding:16px 18px;margin:0 0 14px;
+}
+.entry:hover{border-color:#2b4258}
+.ehead{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;
+  font-family:var(--mono);font-size:12.5px;margin:0 0 8px}
+.src{color:var(--muted)}
+.src::before{content:"[";color:var(--line)}
+.src::after{content:"]";color:var(--line)}
+.date{color:var(--muted)}
+.score{padding:1px 8px;border-radius:4px;font-weight:600}
+.s-hi{color:#0a0f16;background:var(--green)}
+.s-mid{color:#0a0f16;background:var(--amber)}
+.s-lo{color:var(--ink);background:#2a3a4d}
+.entry h3{margin:0 0 8px;font-size:16.5px;line-height:1.5;font-weight:600}
+.entry h3 a{color:var(--ink)}
+.entry h3 a:hover{color:var(--cyan)}
+.entry p{margin:0 0 10px;color:#b3c2d4;font-size:14.5px}
+.note{
+  font-family:var(--mono);font-size:13px;color:var(--note);
+  background:rgba(94,224,138,.05);border-left:2px solid var(--note);
+  padding:8px 12px;margin:0;border-radius:0 6px 6px 0;
+}
+.foot{
+  margin-top:30px;padding-top:18px;border-top:1px dashed var(--line);
+  color:var(--muted);font-size:13px;
+}
+.foot .fr{font-family:var(--mono);font-size:12px;color:var(--note)}
+.back{font-family:var(--mono);font-size:13px;margin:22px 0 0;display:inline-block}
+</style>
+</head>
+<body>
+<div class="term" aria-label="content window">
+<div class="bar"><span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span><span class="path">~/issues/w2026-46</span></div>
+<div class="shell">
+
+<p class="prompt"><span class="u">zephyr@digest</span>:<span class="cwd">~/issues</span>$ <span class="cmd">cat w2026-46.md</span></p>
+<p class="out">本期速览：15 条精选（近 7 天，相关度 ≥ 6）。</p>
+<h1 class="site">Agent 工程周报 · 第 1 期（2026 年第 46 周）</h1>
+<h2 class="sec">## 本期条目（15 条，按相关度排序）</h2>
+<article class="entry">
+<div class="ehead"><span class="src">Simon Willison</span><span class="date">2026-11-10</span><span class="score s-hi">9/10</span></div>
+<h3><a href="https://simonwillison.net/2026/Nov/10/muse-ember/" rel="noopener">Introducing Our Smallest, Most Efficient Model: Muse Ember</a></h3>
+<p>Introducing Our Smallest, Most Efficient Model: Muse Ember Meta AI just launched their entry in the Claude Haiku/GPT Luna category: Muse Ember, which they describe as: [...] our smallest and most efficient model designed for complex reasoning execution and the work agents repeat all day: tool calls, coding subtasks, routing, extraction, and long document parsing. For shorter prompts it&#x27;s priced the same as GPT-6 Luna and Claude Haiku 5.5 - both are $0.10/million input tokens and $0.50/million output. Today&#x27;s other big model release, Claude Fable 5.2, is 80x that price at $8/$40. The pricing is</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">OpenAI Research</span><span class="date">2026-11-09</span><span class="score s-hi">9/10</span></div>
+<h3><a href="https://openai.com/index/coderabbit-codex-daybreak" rel="noopener">CodeRabbit scales agentic software development and ships 20x more</a></h3>
+<p>CodeRabbit uses OpenAI models to govern and trust AI-generated code and Codex to ship 20 times more software with the same engineering team.</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Simon Willison</span><span class="date">2026-11-09</span><span class="score s-hi">8/10</span></div>
+<h3><a href="https://simonwillison.net/2026/Nov/9/llm-anthropic/" rel="noopener">llm-anthropic 0.31</a></h3>
+<p>Release: llm-anthropic 0.31 Anthropic released Fable 5.2 and Mythos 5.2 today. Fable 5.2 is currently ranked first on Artificial Analysis . Anthropic say it &quot;solved two open problems in the physics of black holes&quot;, so clearly their internal benchmarks have become more ambitious! I&#x27;ve added the new models to llm-anthropic , so you can now run prompts through Fable 5.2 like this: uv tool install llm llm install llm-anthropic llm keys set anthropic # paste key here llm -m claude-fable-5.2 &quot;Generate an SVG of a pelican riding a bicycle&quot; I ran pelicans at all five reasoning levels - low , medium ,</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Simon Willison</span><span class="date">2026-11-04</span><span class="score s-hi">8/10</span></div>
+<h3><a href="https://simonwillison.net/2026/Nov/4/datasette-llm/" rel="noopener">datasette-llm 0.1a10</a></h3>
+<p>Release: datasette-llm 0.1a10 Fixes a bug that affected my agent.datasette.io demo site, where the set of available LLM models was not correctly restricted to just those in the configuration. Tags: llm , datasette</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Latent Space</span><span class="date">2026-11-08</span><span class="score s-mid">7/10</span></div>
+<h3><a href="https://latent.space/p/one_million_ai_engineer_special_how_stanford_teaches_ai-native_engineering_mihail_eric_monaco/" rel="noopener">[One Million AI Engineer Special] How Stanford Teaches AI-Native Engineering — Mihail Eric, Monaco</a></h3>
+<p>What do you assign when a coding agent can finish last year’s homework in one prompt? In the second run of Stanford’s CS146S, Mihail Eric brought open-source maintainers into the course. Students have to learn an unfamiliar repo, propose a change, and ...</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Simon Willison</span><span class="date">2026-11-06</span><span class="score s-mid">7/10</span></div>
+<h3><a href="https://simonwillison.net/2026/Nov/6/nilay-patel/" rel="noopener">Quoting Nilay Patel</a></h3>
+<p>The products aren&#x27;t good enough to sell people on the costs. You cannot tell people that you have to listen to the whine of a data center in their backyard for AI overviews and some of the most hilarious deep fake slop in history. It&#x27;s not worth it. It just isn&#x27;t worth it to anyone. And agents aren&#x27;t real and they might not be being used the way that anyone wants them to yet. All these companies are spending more than they&#x27;re making on these products. Refrigerators holding blood storage in Europe are being hacked. The costs are too high. The benefits are not real. And if you connect that to co</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">OpenAI Research</span><span class="date">2026-11-06</span><span class="score s-mid">7/10</span></div>
+<h3><a href="https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science" rel="noopener">Measuring how AI agents handle everyday wet-lab science</a></h3>
+<p>OpenAI introduces BioBasicsBench, a 100-task benchmark measuring how well AI agents interpret raw experimental data and handle everyday wet-lab science.</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Hacker News</span><span class="date"></span><span class="score s-mid">6/10</span></div>
+<h3><a href="https://news.ycombinator.com/item?id=50422628" rel="noopener">ChatGPT Desktop forwards your SSH agent to remote machines</a></h3>
+<p>HN 热帖 · 216 points · 78 comments</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Hacker News</span><span class="date"></span><span class="score s-mid">6/10</span></div>
+<h3><a href="https://github.com/GoogleChrome/modern-web-guidance" rel="noopener">Show HN: Get your coding agent off ~2019 JavaScript, onto modern web primitives</a></h3>
+<p>HN 热帖 · 354 points · 106 comments</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Hacker News</span><span class="date"></span><span class="score s-mid">6/10</span></div>
+<h3><a href="https://github.com/samir-sarwar/samir-vllm" rel="noopener">6 Hours of YouTube and 85 handtyped pages of notes on LLM Inference – Start here</a></h3>
+<p>HN 热帖 · 79 points · 12 comments</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Latent Space</span><span class="date">2026-11-10</span><span class="score s-mid">6/10</span></div>
+<h3><a href="https://latent.space/p/resend/" rel="noopener">Designing for Agents — Zeno Rocha, Resend</a></h3>
+<p>Where does answer engine optimization (AEO) end and agent experience begin? Inside Resend, from the docs that help Claude Code pick an email API to the tools it uses to send.</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Google DeepMind Blog</span><span class="date">2026-11-10</span><span class="score s-mid">6/10</span></div>
+<h3><a href="https://deepmind.google/blog/introducing-alphaproof-code/" rel="noopener">Introducing AlphaProof Code: a breakthrough in verifying complex software at depth</a></h3>
+<p>AlphaProof Code agents wrote three million lines of proofs in Lean to verify Signal’s core encryption.</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Simon Willison</span><span class="date">2026-11-10</span><span class="score s-mid">6/10</span></div>
+<h3><a href="https://simonwillison.net/2026/Nov/10/yonkers-rises/" rel="noopener">Yonkers Rises</a></h3>
+<p>Tool: Yonkers Rises I realized I didn&#x27;t know where Yonkers was, so I looked it up on Google Maps and then, to help embed its location and shape in my head (and to try out Claude Fable 5.2&#x27;s 3D modeling and animation skills), I prompted Fable 5.2 Medium to: Make a three js animation where yonkers stands up as a big mech (cool stand up motion) and átomos around manhattan and queens and Brooklyn, use openstreetmap mapping data It correctly deduced that &quot;átomos&quot; was a mobile keyboard typo for &quot;stomps&quot;: Tags: three-js , llms , ai , generative-ai , claude-mythos-fable</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">OpenAI Research</span><span class="date">2026-11-10</span><span class="score s-mid">6/10</span></div>
+<h3><a href="https://openai.com/index/cogent-security" rel="noopener">Cogent and OpenAI build cyber defense factories for enterprises</a></h3>
+<p>Cogent combines OpenAI models with enterprise context to help automatically remediate vulnerabilities with agents.</p>
+
+</article><article class="entry">
+<div class="ehead"><span class="src">Simon Willison</span><span class="date">2026-11-09</span><span class="score s-mid">6/10</span></div>
+<h3><a href="https://simonwillison.net/2026/Nov/9/details-summary/" rel="noopener">Hide your slop PR descriptions behind</a></h3>
+<p>Most of the changes I make to my projects these days come in the form of PRs opened for me by Claude Code or Codex. The PR is my unit of work - I use them to bundle commits together, iterating on them until a feature is complete, document decisions and then merge the finished result. Today&#x27;s coding agents are great at writing PR descriptions. They&#x27;re too good at describing the work The problem is that they are too good. An agent-written PR description is accurate and comprehensive. It describes the problem, the detailed solution, and the steps taken to verify it. That&#x27;s a lot of information to</p>
+
+</article>
+<p class="foot"><span class="fr">// 点评由编辑人工撰写，摘要来自原文 RSS，版权归原作者所有</span><br>
+*《Agent 工程周报》· 每周一发布*<br>
+zephyr@digest:~/issues$ <span class="cursor"></span></p>
+<p><a class="back" href="../index.html">&lt;- cd ..（返回总目录）</a></p>
+</div></div>
+</body>
+</html>
